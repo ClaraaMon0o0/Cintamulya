@@ -2,7 +2,7 @@ name: Laporan Bug
 description: Membuat laporan bug atau error
 title: "Bug/error: "
 labels: ['bug','cek issue']
-assignees: ['affandii06','rgrahardi']
+assignees: ['affandii06','FirlianiF']
 
 body:
   - type: markdown
