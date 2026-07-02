@@ -330,12 +330,12 @@ class MY_Controller extends CI_Controller
 
         try {
             $data = DB::table('anjungan')
-                ->where(static function ($query) use ($macAddress, $ip, $anjunganUuid) {
+                ->where(static function ($query) use ($macAddress, $ip) {
                     if ($macAddress) {
                         $query->orWhere('mac_address', $macAddress);
                     }
-                    if ($anjunganUuid) {
-                        $query->orWhere('uuid', $anjunganUuid);
+                    if (isset($_COOKIE['pengunjung'])) {
+                        $query->orWhere('id_pengunjung', $_COOKIE['pengunjung']);
                     }
                     if ($ip) {
                         $query->orWhere('ip_address', $ip);

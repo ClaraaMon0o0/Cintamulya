@@ -45,6 +45,7 @@ use Modules\BukuTamu\Models\KeperluanModel;
 use Modules\BukuTamu\Models\KepuasanModel;
 use Modules\BukuTamu\Models\PertanyaanModel;
 use Modules\BukuTamu\Models\TamuModel;
+use NotificationChannels\Telegram\Telegram;
 
 defined('BASEPATH') || exit('No direct script access allowed');
 
@@ -91,7 +92,6 @@ class BukuTamuController extends WebModulController
                 set_session('error', 'Registrasi Gagal Disimpan<br>Anda Sudah Melakukan Registrasi Hari Ini');
             } elseif ($tamu = TamuModel::create($post)) {
                 set_session('success', 'Registrasi Berhasil Disimpan');
-                event(new TamuSubmitted($tamu));
 
                 // Kirim notifikasi ke Telegram
                 $pesan = '<b>Registrasi Buku Tamu Baru</b>' . "\n\n"

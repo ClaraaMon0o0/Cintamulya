@@ -406,7 +406,7 @@ class Rtm extends Admin_Controller
                 $dtks = Dtks::create([
                     'id_rtm'          => $rtm->id,
                     'versi_kuisioner' => DtksEnum::VERSION_CODE,
-                    'is_draft'        => StatusRTMEnum::YA,
+                    'is_draft'        => StatusEnum::YA,
                 ]);
                 // Panggil method dari DtksService untuk sinkronisasi
                 (new DtksService())->synchroniseDTKSWithOpenSid($dtks);
@@ -967,19 +967,17 @@ class Rtm extends Admin_Controller
                     ]),
             ])
             ->when($status != null, static function ($q) use ($status) {
-                if ($status == StatusRTMEnum::YA) { // Aktif
-                    $q->whereHas('kepalaKeluarga', static function ($r) use ($status) {
-                        $r->whereStatusDasar($status)->where('rtm_level', HubunganRTMEnum::KEPALA_RUMAH_TANGGA);
-                    })->has('anggota');
-                } elseif ($status == StatusRTMEnum::TANPA_KEPALA_KELUARGA) { // Tanpa Kepala Keluarga
-                    $q->where(static function ($query) {
-                        $query->doesntHave('kepalaKeluarga')->orDoesntHave('anggota');
-                    });
-                } elseif ($status == StatusRTMEnum::TIDAK) { // Tidak Aktif
+                if ($status == '1') {
                     $q->whereHas(
                         'kepalaKeluarga',
-                        static fn ($r) => $r->where('status_dasar', '!=', StatusRTMEnum::YA)
+                        static fn ($r) => $r->whereStatusDasar($status)->where('rtm_level', HubunganRTMEnum::KEPALA_RUMAH_TANGGA)
                     );
+                } elseif ($status == '0') {
+                    $q->whereDoesntHave('kepalaKeluarga')
+                        ->orWhereHas(
+                            'kepalaKeluarga',
+                            static fn ($r) => $r->where('status_dasar', '!=', 1)
+                        );
                 }
             })
             ->when($sex, static fn ($q) => $q->whereHas('kepalaKeluarga', static fn ($r) => $r->whereSex($sex)->where('rtm_level', HubunganRTMEnum::KEPALA_RUMAH_TANGGA)))

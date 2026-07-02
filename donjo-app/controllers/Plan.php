@@ -105,21 +105,15 @@ class Plan extends Admin_Controller
                 ->addIndexColumn()
                 ->addColumn('aksi', static function ($row) use ($parent): string {
                     $aksi = '';
-
-                    // Ambil parent_id untuk URL
-                    // Gunakan parent dari point jika ada, kalau tidak gunakan parent parameter
-                    $parentId = ($row->point && $row->point->parrent) ? $row->point->parrent : $parent;
-
-                    // Tombol edit - selalu tampil
                     $aksi .= View::make('admin.layouts.components.buttons.edit', [
-                        'url' => 'plan/form/' . implode('/', [$parentId, $row->id]),
+                        'url' => 'plan/form/' .
+                            implode('/', [$row->point->parent->id ?? $parent, $row->id]),
                     ])->render();
-
                     if (can('u')) {
                         $aksi .= View::make('admin.layouts.components.buttons.btn', [
                             'url' => ci_route(
                                 'plan.ajax_lokasi_maps',
-                                implode('/', [$parentId, $row->id])
+                                implode('/', [$row->point->parent->id ?? $parent, $row->id])
                             ),
                             'icon'       => 'fa fa-map',
                             'judul'      => 'Lokasi ' . $row->nama,
@@ -133,11 +127,10 @@ class Plan extends Admin_Controller
                         'active' => $row->enabled,
                     ])->render();
 
-                    // Tombol hapus - selalu tampil
                     $aksi .= View::make('admin.layouts.components.buttons.hapus', [
                         'url' => ci_route(
                             'plan.delete',
-                            implode('/', [$parentId, $row->id])
+                            implode('/', [$row->point->parent->id ?? $parent, $row->id])
                         ),
                         'confirmDelete' => true,
                     ])->render();

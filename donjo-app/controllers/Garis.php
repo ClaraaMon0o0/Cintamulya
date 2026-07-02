@@ -104,16 +104,14 @@ class Garis extends Admin_Controller
                 ->addIndexColumn()
                 ->addColumn('aksi', static function ($row) use ($parent): string {
                     $aksi = '';
-
-                    // Ambil parent_id untuk URL
-                    $parentId = ($row->line && $row->line->parrent) ? $row->line->parrent : $parent;
-
                     $aksi .= View::make('admin.layouts.components.buttons.edit', [
-                        'url' => '/garis/form/' . implode('/', [$parentId, $row->id]),
+                        'url' => '/garis/form/' . ($row->line->parent->id ?? $parent) . '/' . $row->id,
                     ])->render();
-
                     $aksi .= View::make('admin.layouts.components.buttons.btn', [
-                        'url'        => ci_route('garis.ajax_garis_maps', implode('/', [$parentId, $row->id])),
+                        'url' => ci_route('garis.ajax_garis_maps', implode('/', [
+                            $row->line->parent->id ?? $parent,
+                            $row->id,
+                        ])),
                         'judul'      => 'Lokasi ' . $row->nama,
                         'icon'       => 'fa fa-map',
                         'type'       => 'bg-olive',
@@ -126,7 +124,7 @@ class Garis extends Admin_Controller
                     ])->render();
 
                     $aksi .= View::make('admin.layouts.components.buttons.hapus', [
-                        'url'           => '/garis/delete/' . implode('/', [$parentId, $row->id]),
+                        'url'           => '/garis/delete/' . ($row->line->parent->id ?? $parent) . '/' . $row->id,
                         'confirmDelete' => true,
                     ])->render();
 
