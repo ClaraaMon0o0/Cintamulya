@@ -1,0 +1,22 @@
+{
+    "name": "themes/cintamulya",
+    "type": "library",
+    "description": "Tema resmi Website Desa Cintamulya, Kecamatan Candipuro, Kabupaten Lampung Selatan. Dikembangkan dari tema Esensi dengan halaman depan bertema Smart Village.",
+    "homepage": "https://github.com/ClaraaMon0o0/Cintamulya",
+    "license": "GPL-3.0-or-later",
+    "keywords": [
+        "Themes",
+        "OpenSID",
+        "Cintamulya"
+    ],
+    "authors": [
+        {
+            "name": "Tim KKN Desa Cintamulya"
+        },
+        {
+            "name": "Diki Siswanto",
+            "email": "dickyachmady@gmail.com",
+            "role": "Pengembang tema Esensi yang menjadi dasar tema ini"
+        }
+    ]
+}

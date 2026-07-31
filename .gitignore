@@ -1,5 +1,13 @@
-# Abaikan folder desa
+# Abaikan folder desa (berisi data & unggahan warga)
 desa/*
+
+# KECUALI folder tema desa — isinya kode tampilan, bukan data warga.
+# Tema Cintamulya diletakkan di sini supaya AMAN dari pembaruan OpenSID
+# (storage/app/themes/ ditimpa saat OpenSID/tema resmi diperbarui),
+# sekaligus TETAP ikut git supaya bisa dibagikan & punya riwayat versi.
+# Catatan: OpenSID sendiri memperlakukan desa/themes sebagai folder berharga —
+# lihat Job::restore() yang sengaja mengecualikannya saat mengosongkan desa/.
+!desa/themes/
 
 # Abaikan file
 *.log
