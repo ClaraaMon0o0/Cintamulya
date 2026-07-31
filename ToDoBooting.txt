@@ -1,0 +1,842 @@
+================================================================================
+ ToDoBooting.txt
+ PANDUAN MENYALAKAN SISTEM — Website Resmi Desa Cintamulya
+ Kecamatan Candipuro, Kabupaten Lampung Selatan, Provinsi Lampung
+ Basis aplikasi: OpenSID (CodeIgniter 3 + komponen Laravel 10 / Blade)
+================================================================================
+
+ SIFAT BERKAS INI: UMUM & PORTABEL.
+ Berlaku untuk perangkat mana pun (laptop siapa pun, maupun server hosting).
+ Berkas ini DI-COMMIT ke git supaya seluruh anggota tim memakai acuan sama.
+
+ -> Hal yang khas satu perangkat (path folder, versi PHP yang terpasang,
+    kredensial, apa yang sudah/belum dikerjakan di mesin itu) TIDAK ditulis
+    di sini. Tempatnya di berkas terpisah:
+
+        ToDoPribadi.txt      (diabaikan git, satu berkas per perangkat)
+
+    Bila Anda baru meng-clone repo ini di komputer baru, buat
+    ToDoPribadi.txt sendiri memakai kerangka di BAGIAN H.
+
+ Cara pakai: kerjakan dari atas ke bawah. Tandai [x] bila sudah beres.
+     BAGIAN A-C = menyalakan di komputer lokal
+     BAGIAN D-F = naik ke internet (hosting)
+     BAGIAN G   = troubleshooting
+     BAGIAN H   = kerangka ToDoPribadi.txt
+
+ Notasi placeholder yang dipakai di berkas ini:
+     <PROYEK>      = path folder proyek di perangkat Anda
+     <PHPDIR>      = folder instalasi PHP yang aktif
+     <URL-LOKAL>   = alamat akses lokal (lihat B-7)
+     <DOMAIN>      = domain produksi
+
+ Semua angka versi, daftar ekstensi, dan nomor baris yang dikutip di BAGIAN A
+ dan BAGIAN B diambil langsung dari kode repo ini, bukan perkiraan.
+
+
+================================================================================
+ BAGIAN 0 — SIFAT REPO INI (berlaku di semua perangkat)
+================================================================================
+
+ Empat hal yang WAJIB dipahami sebelum mulai, karena inilah sumber
+ kebingungan paling sering:
+
+ 0-1. "Website desa" terdiri dari TIGA bagian di tiga tempat berbeda:
+
+          Bagian            Isinya                          Ikut git?
+          ---------------   -----------------------------   ---------
+          Kode/program      controller, model, view, tema   YA
+          Data              artikel, penduduk, APBDes,      TIDAK
+                            pengaturan, akun admin           (database MySQL)
+          Berkas unggahan   foto, logo, galeri, dokumen,    TIDAK
+                            lampiran surat                   (folder desa/)
+
+      -> git clone HANYA membawa mesinnya. Data & unggahan harus dipindah
+         manual. Ini alasan folder proyek terasa "kosong" pada clone baru.
+
+ 0-2. Folder desa/ diabaikan git (.gitignore: "desa/*").
+      Selama desa/ belum ada, SEMUA akses dilempar ke /install
+      (donjo-app/core/MY_Controller.php baris 292-296).
+      -> Jadi langkah wajib pada perangkat baru adalah menjalankan Web
+         Installer, ATAU memulihkan folder desa/ dari backup.
+
+ 0-3. Berkas index.php dan .htaccess juga diabaikan git.
+      -> Di perangkat/server baru, .htaccess HARUS dibuat manual (B-6).
+
+ 0-4. Perintah "php artisan" TIDAK BISA DIPAKAI di distribusi ini.
+      Berkas artisan hanya berisi header lisensi tanpa satu baris kode pun
+      (sudah diuji: "php artisan --version" tidak mengeluarkan apa pun),
+      kemungkinan terpangkas saat proses obfuscate rilis. Sebaliknya
+      index.php utuh, sehingga akses lewat web tetap normal.
+
+      Kelas perintah tetap terdaftar di app/Console/Kernel.php, tapi tidak
+      bisa dieksekusi:
+          opensid:setup / opensid:desa-baru / opensid:module
+          opensid:db-acak / view:clear
+
+      Padanan lewat antarmuka web:
+          Bersihkan cache view  -> hapus manual storage/framework/views/*
+          Tambah desa baru      -> Web Installer (/install)
+          Kelola modul          -> Admin > Pengaturan > Modul
+          Backup & restore      -> Admin > Database
+
+
+================================================================================
+ BAGIAN A — PRASYARAT TEKNIS (WAJIB, TIDAK BOLEH KURANG)
+================================================================================
+
+ [ ] A-1. Versi PHP: MINIMAL 8.1, MAKSIMAL 8.3
+          Sumber: donjo-app/config/installer.php baris 266
+              version_compare(PHP_VERSION, '8.1', '>=')
+           && version_compare(PHP_VERSION, '8.3', '<=')
+
+          !! PHP 8.4 atau lebih baru DITOLAK installer, tanpa jalan pintas.
+             Ini jebakan paling sering: Laragon versi baru dan Hostinger
+             sama-sama memakai PHP 8.4 sebagai default.
+             Rekomendasi aman: PHP 8.2 atau 8.3.
+
+          !! Catatan build Windows: seluruh cabang PHP 8.1-8.3 dibangun
+             dengan Visual Studio 16 (vs16), sedangkan Apache versi baru
+             dibangun vs17. Perbedaan ini TIDAK bisa dihindari dan pada
+             praktiknya aman (ABI vcruntime140 sama). Cara memastikannya
+             ada di B-4.
+
+ [ ] A-2. Ekstensi PHP yang diperiksa installer (12 buah):
+              pdo_mysql       curl        fileinfo    gd
+              iconv           json        mbstring    mysqli
+              mysqlnd         tidy        zip         exif
+          Sumber: donjo-app/config/installer.php baris 266-314
+
+ [ ] A-3. Ekstensi TAMBAHAN yang tidak diperiksa installer tapi TETAP WAJIB:
+              openssl   -> TLS/enkripsi; Composer menolak jalan tanpanya
+              intl      -> dituntut paket mike42/escpos-php
+          Sumber: hasil "composer check-platform-reqs".
+          Tanpa keduanya installer bisa lolos, tapi sistem gagal saat dipakai.
+
+          Jadi total 14 ekstensi. Cara cek cepat:
+              Windows / PowerShell / CMD:
+                  php -m | findstr /I "pdo_mysql curl fileinfo gd iconv json mbstring mysqli mysqlnd tidy zip exif openssl intl"
+              Linux / SSH:
+                  php -m | grep -iE "pdo_mysql|curl|fileinfo|gd|iconv|json|mbstring|mysqli|mysqlnd|tidy|zip|exif|openssl|intl"
+
+          Yang TIDAK ikut tercetak berarti MATI dan harus diaktifkan.
+
+          !! "tidy" dan "exif" paling sering mati secara default.
+             Di lokal mudah diaktifkan (DLL-nya sudah ada dalam paket resmi
+             PHP). Di shared hosting Anda tidak punya kuasa sebesar itu —
+             lihat peringatan di D-1.
+
+ [ ] A-4. Database: MySQL 5.7+ atau MariaDB 10.3+
+          Collation yang dipakai: utf8mb4_general_ci
+
+ [ ] A-5. Folder yang harus bisa ditulis (permission >= 0755):
+              storage/framework
+              storage/logs
+              backup_inkremental   (bila ada)
+          Sumber: donjo-app/config/installer.php baris 250-258
+
+ [ ] A-6. Composer 2.x terpasang
+              composer --version
+
+ [ ] A-7. mod_rewrite (Apache) AKTIF.
+          Tanpa ini semua halaman selain beranda akan 404.
+          Cara memastikan modul termuat:
+              httpd -M            (cari "rewrite_module")
+
+ [ ] A-8. Setelan php.ini yang disarankan untuk OpenSID
+          (default PHP terlalu kecil untuk impor data penduduk & backup):
+              memory_limit        = 256M
+              upload_max_filesize = 32M
+              post_max_size       = 32M
+              max_execution_time  = 300
+              date.timezone       = "Asia/Jakarta"
+
+
+================================================================================
+ BAGIAN B — MENYALAKAN DI KOMPUTER LOKAL
+================================================================================
+
+ [ ] B-1. Tempatkan folder proyek di document root web server
+          Contoh Laragon : C:\laragon\www\...
+          Contoh XAMPP   : C:\xampp\htdocs\...
+          Catat path sebenarnya sebagai <PROYEK> di ToDoPribadi.txt Anda.
+
+ [ ] B-2. Pastikan versi PHP masuk rentang 8.1-8.3
+              php -v
+
+          Bila terlalu baru (8.4+), pasang versi yang didukung:
+              a) Laragon : klik kanan ikon > PHP > Version > pilih 8.2/8.3.
+                 Bila daftarnya tidak menyediakan, coba
+                 Laragon > Tools > Quick add > PHP.
+              b) Manual  : unduh build Thread Safe (TS) x64 dari
+                 https://windows.php.net/download/  — WAJIB varian
+                 "Thread Safe" karena Apache memakai mod_php; varian NTS
+                 tidak menyediakan php8apache2_4.dll.
+                 Ekstrak sebagai folder baru di sebelah versi lama,
+                 JANGAN menimpa yang sudah ada.
+
+          !! PENTING soal Laragon: berkas yang mengarahkan Apache ke PHP,
+             yaitu  C:\laragon\etc\apache2\mod_php.conf, bertanda
+             "This file is auto-generated". Laragon MENULISNYA ULANG setiap
+             kali start berdasarkan pilihan PHP-nya sendiri.
+             -> Menyunting berkas itu secara manual TIDAK BERTAHAN melewati
+                restart. Gantilah versi PHP dari MENU Laragon, bukan dari
+                berkas.
+
+          !! PHP untuk CLI dan PHP untuk Apache BISA BERBEDA.
+             "php -v" di terminal membaca PATH, sedangkan Apache membaca
+             mod_php.conf. Yang menentukan lolos/tidaknya installer adalah
+             yang dipakai APACHE. Cara memastikan ada di B-8.
+
+ [ ] B-3. Aktifkan ekstensi yang mati
+          Buka <PHPDIR>\php.ini (bila belum ada, salin dari
+          php.ini-development), lalu:
+              [ ] pastikan aktif:  extension_dir = "ext"
+              [ ] hapus tanda ; di depan baris ini:
+                      extension=curl        extension=mbstring
+                      extension=exif        extension=mysqli
+                      extension=fileinfo    extension=pdo_mysql
+                      extension=gd          extension=tidy
+                      extension=zip         extension=openssl
+                      extension=intl
+              [ ] terapkan juga setelan A-8
+
+          Catatan: iconv, json, dan mysqlnd sudah menyatu di inti PHP 8
+          Windows, jadi tidak punya baris extension= tersendiri.
+
+          Catatan: baris exif punya komentar mengekor
+          ("; Must be after mbstring..."). Biarkan komentarnya, cukup
+          hapus titik-komanya di depan.
+
+          Simpan, lalu restart web server. Cek ulang dengan perintah A-3.
+
+ [ ] B-4. Pastikan Apache benar-benar bisa memuat modul PHP-nya
+              httpd -t        -> harus "Syntax OK"
+              httpd -M        -> harus memuat php_module DAN rewrite_module
+
+          Ini uji penting bila versi Visual Studio Apache dan PHP berbeda
+          (lihat catatan di A-1). Bila php_module tidak termuat, Apache akan
+          menyajikan berkas .php sebagai teks mentah atau gagal start.
+
+ [ ] B-5. Pasang dependensi Composer
+              cd <PROYEK>
+              composer install
+              composer check-platform-reqs     -> harus exit code 0
+
+          Bila muncul keluhan platform PHP, JANGAN pakai
+          --ignore-platform-reqs sebagai jalan pintas. Perbaiki versi
+          PHP-nya (B-2) atau ekstensinya (B-3).
+
+ [ ] B-6. Siapkan .htaccess untuk LOKAL
+          Repo menyediakan contohnya:
+              copy htaccess.apache.txt .htaccess      (Windows)
+              cp   htaccess.apache.txt .htaccess      (Linux)
+
+          Lalu sunting tiga hal:
+
+          a) MATIKAN blok "ENFORCE HTTPS" (beri # di 4 baris ini):
+                 RewriteCond %{HTTP:CF-Visitor} ...
+                 RewriteRule .* - [E=HTTPS:on]
+                 RewriteCond %{HTTPS} != on
+                 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} ...
+             Alasan: di lokal belum ada SSL. Bila dibiarkan aktif, browser
+             kena redirect loop / ERR_SSL_PROTOCOL_ERROR.
+
+          b) Setel RewriteBase sesuai hasil B-7.
+
+          c) Aktifkan mode debug di baris paling bawah:
+                 SetEnv CI_ENV "development"
+             (di produksi WAJIB dikembalikan ke "production" — lihat D-6)
+
+ [ ] B-7. Tentukan alamat akses lokal <URL-LOKAL>
+          Ini bergantung LETAK folder proyek, dan sering disalahpahami.
+
+          KASUS 1 — folder proyek berada LANGSUNG di bawah document root
+                    (contoh: C:\laragon\www\CintaMulya)
+              Laragon membuat virtual host otomatis:
+                  <URL-LOKAL> = http://cintamulya.test
+              .htaccess: biarkan RewriteBase tetap ter-#
+
+          KASUS 2 — folder proyek BERSARANG lebih dalam
+                    (contoh: C:\laragon\www\Kuliah\KKN\CintaMulya)
+              Laragon TIDAK membuat virtual host untuk folder bersarang.
+              Alamat .test tidak akan pernah terbentuk.
+                  <URL-LOKAL> = http://localhost/Kuliah/KKN/CintaMulya/
+              .htaccess: WAJIB mengaktifkan RewriteBase dan menyamakannya
+              dengan path subfolder tersebut, contoh:
+                  RewriteBase /Kuliah/KKN/CintaMulya/
+
+              Bila menginginkan alamat rapi .test, pindahkan folder proyek
+              ke document root langsung (jadi KASUS 1), lalu komentari
+              kembali RewriteBase. Catatan: Laragon perlu hak administrator
+              karena menyunting C:\Windows\System32\drivers\etc\hosts
+
+          Catat hasilnya sebagai <URL-LOKAL> di ToDoPribadi.txt.
+
+ [ ] B-8. Nyalakan web server + database, lalu pastikan PHP-nya benar
+          Laragon: klik "Start All" — Apache dan MySQL keduanya harus hijau.
+
+          Verifikasi versi PHP yang dipakai APACHE (bukan CLI): buka
+          <URL-LOKAL>/index.php/install/server di browser. Halaman itu
+          menampilkan hasil pemeriksaan 12 ekstensi + rentang versi PHP.
+
+          Uji definitif lolos/tidak — buka:
+              <URL-LOKAL>/index.php/install/folders
+          Bila Anda DIPANTULKAN kembali ke .../install/server, berarti
+          pemeriksaan server GAGAL (Install.php baris 109-112 memang
+          memantulkan balik bila check_server() gagal). Bila halaman
+          "Folders" muncul, berarti LOLOS.
+
+ [ ] B-9. Buat database kosong
+              Nama      : opensid_cintamulya   (atau sesuai selera)
+              Collation : utf8mb4_general_ci
+          Lewat Laragon > Database, atau http://localhost/phpmyadmin
+
+ [ ] B-10. Kredensial database — JANGAN disunting manual
+          Berkas donjo-app/config/database.php TIDAK menyimpan kredensial
+          yang benar-benar dipakai. Pada baris 138 berkas itu berbunyi:
+              include LOKASI_CONFIG_DESA . 'database.php';
+          yaitu desa/config/database.php  (LOKASI_CONFIG_DESA didefinisikan
+          di donjo-app/config/constants.php baris 202).
+
+          Artinya apa pun yang Anda tulis di donjo-app/config/database.php
+          akan DITIMPA. Jadi:
+              -> JANGAN sunting donjo-app/config/database.php (milik upstream)
+              -> Isi kredensial lewat FORM Web Installer (B-11 tahap 4).
+                 Installer yang akan menulis desa/config/database.php.
+
+          Siapkan catatannya untuk diisi ke form:
+              hostname : localhost
+              username : ..........................
+              password : ..........................
+              database : ..........................
+              port     : 3306
+
+ [ ] B-11. JALANKAN WEB INSTALLER
+          Buka:  <URL-LOKAL>/install
+
+          Urutan 8 langkah (donjo-app/controllers/Install.php):
+              1. Welcome
+              2. Server      -> cek versi PHP + 12 ekstensi (BAGIAN A)
+              3. Folders     -> cek izin tulis folder
+              4. Database    -> isi kredensial DB
+              5. Migrations  -> pembuatan tabel + data awal
+              6. Keys        -> pembuatan app_key
+              7. User        -> BUAT AKUN ADMIN
+              8. Finish
+
+          Simpan kredensial admin di password manager, JANGAN di berkas
+          yang ter-commit git.
+
+ [ ] B-12. Verifikasi instalasi berhasil
+              [ ] Folder desa/ muncul di root proyek     <- tanda sukses
+              [ ] Beranda terbuka   : <URL-LOKAL>
+              [ ] Admin terbuka     : <URL-LOKAL>/siteman
+
+          Setelah desa/ ada, URL /install otomatis mengembalikan 404.
+          Ini proteksi bawaan, normal dan memang diinginkan.
+
+ [ ] B-13. Isi identitas desa
+          Admin > Identitas Desa:
+              Nama Desa  : Cintamulya
+              Kecamatan  : Candipuro
+              Kabupaten  : Lampung Selatan
+              Provinsi   : Lampung
+              Kode Desa / Kode Pos / alamat kantor / logo desa
+
+          Halaman depan membaca nilai-nilai ini secara dinamis (variabel
+          $desa), jadi teks hero ikut menyesuaikan sendiri.
+
+
+================================================================================
+ BAGIAN B-LANJUTAN — MEMULIHKAN DATA DARI BACKUP LAMA
+================================================================================
+
+ Tempuh ini bila Anda punya backup dari instalasi OpenSID sebelumnya
+ (satu berkas .sql + satu arsip folder desa/).
+
+ [ ] BR-1. Periksa dulu versi backup-nya
+          Cari nilai current_version di dalam berkas .sql:
+              findstr /C:"'current_version'" backup.sql        (Windows)
+              grep -o "'current_version'[^)]*" backup.sql      (Linux)
+
+          Bandingkan dengan versi kode saat ini:
+              donjo-app/helpers/opensid_helper.php baris 85 (VERSION)
+                                                   baris 97 (VERSI_DATABASE)
+
+ [ ] BR-2. Pastikan rantai migrasi bersambung
+          Lihat nilai versi_database TERAKHIR di tabel migrasi dalam .sql:
+              grep -o "INSERT INTO .migrasi.[^;]*" backup.sql | tail -3
+
+          Lalu bandingkan dengan berkas migrasi tertua yang tersedia:
+              ls donjo-app/models/migrations | sort | head -3
+
+          Migrasi dijalankan untuk setiap berkas yang nomornya BELUM ada di
+          tabel migrasi (app/Libraries/Database.php baris 95-124). Selama
+          nomor terakhir backup < nomor migrasi tertua yang tersedia dan
+          tidak ada lompatan, upgrade bisa berjalan.
+
+          !! Ada satu gerbang yang TIDAK bisa diperiksa dari kode:
+             app/Libraries/Database.php baris 54 memakai konstanta
+             MINIMUM_VERSI, dan konstanta itu (juga PREMIUM) tidak
+             terdefinisi di salinan repo ini. Nilainya baru ketahuan saat
+             migrasi dijalankan. Bila backup terlalu tua, akan muncul pesan
+             "Silakan upgrade dulu ke OpenSID dengan minimal versi X" —
+             dan Anda perlu naik bertahap lewat versi perantara.
+
+ [ ] BR-3. !! PERIKSA KEBOCORAN KREDENSIAL DI DALAM ARSIP
+          Arsip folder desa/ HAMPIR PASTI memuat desa/config/database.php
+          berisi username & PASSWORD hosting lama dalam TEKS BIASA.
+
+              [ ] Buka berkas itu dan catat kredensial apa yang terekspos
+              [ ] GANTI password tersebut di panel hosting lama
+              [ ] Bila akun lama sudah tidak dipakai, hapus databasenya
+              [ ] JANGAN menyalin berkas itu ke instalasi baru (BR-5)
+              [ ] Jangan simpan arsipnya di folder yang tersinkron cloud
+
+ [ ] BR-4. Pulihkan database lewat fitur bawaan OpenSID
+          JANGAN mengimpor dump lama mentah-mentah ke database lalu berharap
+          migrasi jalan sendiri. Tempuh urutan ini:
+
+              1. Selesaikan dulu instalasi bersih (B-11) sampai Finish.
+                 Ini menghasilkan skema versi terbaru + kerangka folder desa/
+              2. Masuk Admin > Database > Restore, unggah berkas .sql
+                 (donjo-app/controllers/Database.php baris 234, 403, 473)
+              3. Biarkan proses migrasi berjalan sampai tuntas.
+                 Jangan tutup browser di tengah proses.
+
+          Mekanisme ini menandai sesi dengan "sedang_restore", yang dikenali
+          app/Libraries/Database.php baris 74 agar migrasi tidak bentrok
+          dengan proses restore.
+
+ [ ] BR-5. Pulihkan berkas unggahan dari arsip desa/
+          Timpa HANYA folder-folder unggahan berikut:
+              desa/upload/          desa/logo/
+              desa/template-surat/  desa/widgets/
+              desa/pengaturan/
+
+          JANGAN menimpa:
+              desa/config/database.php   <- kredensial hosting lama (BR-3)
+              desa/config/config.php     <- bisa memuat setelan basi
+
+          Bila folder ini tidak dibawa, seluruh gambar akan rusak (broken
+          image) walau datanya ada di database.
+
+ [ ] BR-6. Verifikasi hasil pemulihan
+              [ ] Jumlah penduduk di Admin > Kependudukan sesuai harapan
+              [ ] Artikel lama muncul beserta gambarnya
+              [ ] Logo desa & peta wilayah tampil
+              [ ] Login admin lama masih berfungsi (bila tidak, buat ulang)
+
+
+================================================================================
+ BAGIAN C — VERIFIKASI HALAMAN DEPAN CINTAMULYA
+================================================================================
+
+ Memeriksa hasil kerja tema di:
+     storage/app/themes/esensi/resources/views/
+
+ [ ] C-1. Aktifkan tema "esensi"
+          Admin > Pengaturan Website (atau Tema) > pilih Esensi > Simpan.
+          Halaman depan Cintamulya dibangun di atas tema ini. Bila tema lain
+          (mis. natra) yang aktif, hero & kartu potensi TIDAK akan tampil.
+
+          Catatan arsitektur: OpenSID memindai DUA lokasi tema
+          (donjo-app/helpers/theme_helper.php baris 208):
+              storage/app/themes/*   -> "Tema bawaan sistem"  (ter-track git)
+              desa/themes/*          -> "Tema buatan desa"    (diabaikan git)
+          Berkas Cintamulya saat ini berada di lokasi PERTAMA, sehingga bisa
+          tertimpa saat OpenSID/tema Esensi diperbarui. Rencana pemindahan ke
+          desa/themes/ dicatat sebagai pekerjaan lanjutan.
+
+ [ ] C-2. Bersihkan cache view yang sudah terkompilasi
+              Windows / PowerShell:
+                  Remove-Item "storage\framework\views\*" -Recurse -Force
+              Linux / SSH:
+                  rm -rf storage/framework/views/*
+
+          (perintah "php artisan view:clear" TIDAK tersedia — lihat 0-4)
+
+          WAJIB setiap kali berkas .blade.php diubah, kalau tidak perubahan
+          tidak akan kelihatan.
+
+ [ ] C-3. Unggah "Latar Website"
+          Admin > Pengaturan Website > Latar Website.
+          Dipakai sebagai latar Hero Section (elemen LCP, sudah di-preload).
+          Saran: ±1600x700 px, WebP/JPG, di bawah 250 KB.
+          Foto yang cocok: hamparan sawah, kantor desa, kegiatan warga.
+
+ [ ] C-4. Aktifkan menu yang ditautkan tombol CTA & Aksi Cepat
+          Admin > Pengaturan > Menu. Pastikan AKTIF:
+              [ ] layanan-mandiri           (tombol "Layanan Mandiri")
+              [ ] statistik/jenis-kelamin   (tombol "Statistik Penduduk")
+              [ ] pembangunan               (Aksi Cepat "Pembangunan")
+              [ ] pengaduan                 (Aksi Cepat "Pengaduan Warga")
+              [ ] data-wilayah              (kartu "Pertanian & Gotong Royong")
+
+          Bila salah satu dimatikan, tautannya menampilkan halaman "menu
+          tidak aktif" (proteksi hak_akses_menu()). Solusinya: aktifkan
+          menunya, ATAU hapus <li>-nya di
+          partials/cintamulya/aksi_cepat.blade.php
+
+ [ ] C-5. Nyalakan Layanan Mandiri
+          Admin > Pengaturan Aplikasi > "Layanan Mandiri" = Aktif.
+          Tombol CTA hijau di hero hanya muncul bila setting ini = 1.
+
+ [ ] C-6. Pastikan widget statistik punya data
+          Bagian "Data Kependudukan" mengambil $stat_widget (laporan Jenis
+          Kelamin). Bila total penduduk masih 0, SELURUH section itu
+          otomatis disembunyikan — ini memang perilaku yang dirancang.
+          -> Isi data lewat Admin > Kependudukan > Penduduk, atau pulihkan
+             dari backup (BAGIAN B-LANJUTAN).
+
+ [ ] C-7. Uji tampilan di berbagai ukuran layar
+              [ ] Ponsel 375px  — kartu potensi menumpuk 1 kolom,
+                                  Aksi Cepat jadi 2x2
+              [ ] Tablet 768px  — kartu potensi jadi 3 kolom
+              [ ] Desktop 1280px
+          Chrome DevTools (F12) > Toggle device toolbar (Ctrl+Shift+M).
+
+ [ ] C-8. Uji performa & aksesibilitas
+          Chrome DevTools > Lighthouse > mode Mobile.
+          Target realistis: Performance >= 80, Accessibility >= 95.
+          Periksa juga:
+              [ ] Navigasi hanya dengan Tab — outline fokus harus terlihat
+              [ ] Semua halaman selain beranda bisa dibuka (uji mod_rewrite)
+              [ ] Halaman kategori artikel TIDAK menampilkan hero
+                  (uji: klik salah satu kategori di menu)
+
+
+================================================================================
+ BAGIAN D — NAIK KE INTERNET (HOSTING)
+================================================================================
+
+ CATATAN KEJUJURAN: BAGIAN 0-C bersumber dari kode repo ini dan bisa
+ dipastikan. BAGIAN D-F menyangkut panel hosting yang tidak bisa diperiksa
+ dari dalam repo — nama menu di hPanel Hostinger bisa bergeser sewaktu-waktu.
+ Prinsip dan nilai teknisnya tetap sesuai kebutuhan OpenSID.
+
+ [ ] D-1. Pilih paket hosting yang memenuhi syarat
+          Yang WAJIB dipastikan SEBELUM bayar:
+              [ ] Bisa memilih PHP 8.1-8.3 (BUKAN terkunci di 8.4)
+              [ ] Ekstensi tidy tersedia/bisa diaktifkan
+              [ ] Ekstensi intl & openssl tersedia
+              [ ] Kuota disk cukup — folder vendor/ saja puluhan MB
+              [ ] Akses SSH (sangat membantu, tidak wajib)
+
+          !! RISIKO TERBESAR: ekstensi "tidy" tidak selalu tersedia di paket
+             shared termurah, dan di hosting Anda TIDAK bisa memasangnya
+             sendiri. Tanyakan ke live chat SEBELUM membeli:
+             "Apakah ekstensi PHP tidy, intl, dan exif bisa diaktifkan
+              di paket ini?"
+             Bila tidak bisa, installer OpenSID mentok di langkah "Server"
+             dan tidak ada cara melewatinya.
+
+ [ ] D-2. Siapkan domain
+              a) Domain desa resmi : cintamulya.desa.id
+                 Didaftarkan lewat PANDI / dinas terkait, perlu surat
+                 pengantar pemerintah desa. INI YANG PALING LAMA —
+                 MULAI URUS DARI SEKARANG, jangan tunggu situs siap.
+              b) Domain umum       : cintamulya.id / desacintamulya.com
+              c) Sementara         : subdomain gratis dari penyedia
+
+          Arahkan nameserver / A record ke hosting, tunggu propagasi DNS
+          (bisa sampai 24 jam).
+
+ [ ] D-3. Setel PHP di panel hosting
+              [ ] Versi     : 8.2 atau 8.3
+              [ ] Ekstensi  : 14 ekstensi dari A-2 + A-3
+              [ ] Setelan   : nilai-nilai dari A-8
+
+ [ ] D-4. Buat database di panel hosting
+          Catat 4 hal ini (akan dipakai di D-7):
+              Host     : ..........................
+              Database : ..........................
+              Username : ..........................
+              Password : ..........................
+          Simpan di password manager, JANGAN di berkas ter-commit.
+
+ [ ] D-5. Unggah berkas aplikasi ke public_html/
+          Tanpa SSH:
+              1. Buat ZIP seluruh isi folder proyek.
+                 SERTAKAN  : vendor/ (wajib — Composer belum tentu ada di
+                             server), storage/, donjo-app/, app/,
+                             resources/, assets/, Modules/, index.php
+                 KECUALIKAN: .git/, node_modules/, tests/,
+                             backup_inkremental/, *.sql, *.zip,
+                             storage/framework/views/*, ToDoPribadi.txt
+              2. File Manager > masuk public_html > unggah ZIP > Extract
+              3. HAPUS berkas ZIP setelah selesai
+
+          Dengan SSH (jauh lebih rapi):
+              cd ~/public_html
+              git clone <url-repo> .
+              composer install --no-dev --optimize-autoloader
+
+          !! Isi proyek harus LANGSUNG di dalam public_html/, bukan di
+             public_html/CintaMulya/ — kecuali memang ingin alamat subfolder
+             (maka sesuaikan RewriteBase, aturannya sama seperti B-7).
+
+ [ ] D-6. Buat .htaccess untuk PRODUKSI
+              [ ] BIARKAN blok "ENFORCE HTTPS" AKTIF (kebalikan dari B-6a)
+              [ ] RewriteBase ter-# bila di root domain; diaktifkan bila
+                  dipasang di subfolder
+              [ ] Set environment produksi di baris paling bawah:
+                      SetEnv CI_ENV "production"
+                  JANGAN "development" di server publik — pesan error PHP
+                  akan tampil ke publik dan membocorkan struktur sistem.
+
+ [ ] D-7. Setel kredensial database produksi
+          Berkas yang benar: desa/config/database.php
+          (BUKAN donjo-app/config/database.php — lihat B-10)
+
+              OPSI 1, instal baru di server : tidak perlu disunting.
+                  Installer menulis berkas itu sendiri dari form.
+              OPSI 2, pindahan dari lokal   : WAJIB disunting.
+                  Ganti hostname/username/password/database dengan data D-4.
+                  Bila tidak, situs masih mencoba menghubungi database lokal.
+
+ [ ] D-8. Setel izin folder
+              Folder : 755        File : 644
+          Harus bisa ditulis web server:
+              storage/framework/  storage/logs/  storage/app/  desa/
+          Lewat SSH:
+              find . -type d -exec chmod 755 {} \;
+              find . -type f -exec chmod 644 {} \;
+              chmod -R 775 storage desa
+
+ [ ] D-9. Pasang SSL & paksa HTTPS
+          Panel > Security > SSL > Install (Let's Encrypt, gratis).
+          Aktifkan "Force HTTPS".
+          Tunggu status ACTIVE sebelum mengakses situs, kalau tidak blok
+          ENFORCE HTTPS di .htaccess bisa memicu redirect loop.
+
+ [ ] D-10. Pasang isi situs: instal baru ATAU pindahkan dari lokal
+              OPSI 1 — Instalasi baru & bersih:
+                  [ ] Pastikan folder desa/ TIDAK ikut diunggah
+                  [ ] Buka https://<DOMAIN>/install, ikuti 8 langkah (B-11)
+
+              OPSI 2 — Pindahkan hasil kerja lokal (BIASANYA INI):
+                  [ ] Ekspor database lokal (mysqldump atau phpMyAdmin)
+                  [ ] Impor ke database hosting lewat phpMyAdmin
+                      (bila > 50 MB, kompres jadi .gz dulu)
+                  [ ] Unggah SELURUH folder desa/ dari lokal
+                  [ ] Sunting desa/config/database.php sesuai D-7
+                  [ ] JANGAN buka /install (desa/ sudah ada, otomatis 404)
+                  [ ] Login di https://<DOMAIN>/siteman
+
+                  !! Bila dilempar ke "koneksi_database/config" atau muncul
+                     pesan soal app_key: itu karena app_key di database tidak
+                     cocok dengan app_key server baru. Ikuti form yang muncul.
+
+ [ ] D-11. Bersihkan berkas yang tidak boleh ada di publik
+              [ ] Berkas *.sql hasil impor         -> HAPUS
+              [ ] Berkas ZIP hasil unggahan        -> HAPUS
+              [ ] Folder tests/, .github/, bin/    -> hapus bila terbawa
+              [ ] ToDoPribadi.txt                  -> jangan pernah diunggah
+              [ ] Pastikan .git/ tidak ada di server
+
+          Uji manual, ketiganya harus 403 atau 404:
+              https://<DOMAIN>/composer.json
+              https://<DOMAIN>/.git/config
+              https://<DOMAIN>/donjo-app/config/database.php
+
+
+================================================================================
+ BAGIAN E — VERIFIKASI SETELAH LIVE
+================================================================================
+
+ [ ] E-1.  Halaman terbuka lewat HTTPS, tanpa peringatan sertifikat
+ [ ] E-2.  Hero Section, 3 kartu potensi, dan widget kependudukan tampil
+ [ ] E-3.  Semua gambar muncul (bila rusak: folder desa/upload/ belum lengkap)
+ [ ] E-4.  Semua tautan menu bisa dibuka (bila 404 semua: lihat G-1)
+ [ ] E-5.  Login admin /siteman berhasil
+ [ ] E-6.  Layanan Mandiri bisa diakses warga
+ [ ] E-7.  Uji dari HP dengan kuota seluler (bukan WiFi) — ini kondisi nyata
+           yang dipakai warga desa
+ [ ] E-8.  Lighthouse Mobile diulang di server produksi
+ [ ] E-9.  Daftarkan ke Google Search Console, kirim https://<DOMAIN>/sitemap
+ [ ] E-10. Pastikan https://<DOMAIN>/robots.txt terbaca
+ [ ] E-11. Aktifkan backup otomatis hosting, DAN buat backup manual pertama:
+               - Ekspor database (.sql)
+               - Arsipkan folder desa/   <- paling berharga, tidak ada di git
+ [ ] E-12. Simpan di password manager: kredensial panel hosting, database,
+           akun admin OpenSID, dan registrar domain.
+
+
+================================================================================
+ BAGIAN F — PERAWATAN RUTIN
+================================================================================
+
+ [ ] F-1. Backup mingguan: database + folder desa/
+ [ ] F-2. Sebelum memperbarui versi OpenSID: backup dulu, SELALU.
+ [ ] F-3. Setiap kali berkas .blade.php diubah: kosongkan
+          storage/framework/views/  (lihat C-2)
+ [ ] F-4. Pantau ukuran storage/logs/ — bisa membengkak, pangkas berkala.
+ [ ] F-5. Periksa berkala bahwa desa/config/database.php tidak pernah
+          ter-commit ke git:
+              git log --all --oneline -- desa/config/database.php
+          (harus kosong)
+
+
+================================================================================
+ BAGIAN G — TROUBLESHOOTING
+================================================================================
+
+ G-1. Beranda terbuka, TAPI semua halaman lain 404
+      Sebab  : mod_rewrite mati, .htaccess belum dibuat, atau RewriteBase
+               tidak cocok dengan letak folder.
+      Solusi : pastikan .htaccess ADA (bukan htaccess.apache.txt), cek
+               "httpd -M" memuat rewrite_module, dan sesuaikan RewriteBase
+               mengikuti aturan B-7.
+
+ G-2. "Terlalu banyak pengalihan" / ERR_TOO_MANY_REDIRECTS
+      Sebab  : blok ENFORCE HTTPS aktif padahal SSL belum siap.
+      Solusi : tunggu SSL Active, atau matikan blok itu sementara (B-6a).
+
+ G-3. Berkas .php tersaji sebagai teks mentah, atau Apache gagal start
+      Sebab  : php_module tidak termuat (biasanya salah menunjuk DLL, atau
+               memakai build PHP Non Thread Safe).
+      Solusi : jalankan "httpd -t" dan "httpd -M" (B-4). Pastikan memakai
+               build Thread Safe.
+
+ G-4. Selalu dilempar ke /install padahal sudah pernah instal
+      Sebab  : folder desa/ hilang atau tidak terbawa saat pindah.
+      Solusi : unggah kembali folder desa/ dari backup.
+
+ G-5. "Silakan tambah desa baru melalui console"
+      Sebab  : tabel config kosong — database ada tapi belum ada data desa.
+      Solusi : hapus folder desa/, lalu jalankan ulang Web Installer.
+               Perintah console TIDAK tersedia di distribusi ini (0-4).
+
+ G-6. Dilempar ke halaman koneksi_database/config
+      Sebab  : app_key di database tidak cocok dengan app_key server.
+               Umum terjadi setelah pindah hosting.
+      Solusi : ikuti form penyelarasan yang ditampilkan halaman itu.
+
+ G-7. "Silakan upgrade dulu ke OpenSID dengan minimal versi X"
+      Sebab  : backup/database terlalu tua, ditolak gerbang MINIMUM_VERSI
+               (app/Libraries/Database.php baris 91-93).
+      Solusi : upgrade bertahap — pasang OpenSID versi X terlebih dahulu,
+               migrasikan di sana, baru naik ke versi terkini.
+
+ G-8. Halaman putih total, tanpa pesan apa pun
+      Sebab  : PHP fatal error tersembunyi karena CI_ENV=production.
+      Solusi : ubah SEMENTARA di .htaccess ke
+                   SetEnv CI_ENV "development"
+               baca pesannya, perbaiki, LALU KEMBALIKAN ke "production".
+               Periksa juga storage/logs/
+
+ G-9. Installer mentok di langkah "Server"
+      Sebab  : versi PHP di luar 8.1-8.3, atau ekstensi kurang
+               (tersering tidy, exif, intl).
+      Solusi : lihat BAGIAN A. Tidak ada jalan pintas.
+      Catatan: ingat PHP CLI dan PHP Apache bisa berbeda versi (B-2).
+
+ G-10. Perubahan tampilan tidak muncul walau berkas sudah disimpan
+      Sebab  : Blade masih memakai versi lama yang sudah terkompilasi.
+      Solusi : kosongkan storage/framework/views/ (C-2), lalu hard-refresh
+               browser (Ctrl+Shift+R).
+
+ G-11. Hero Section tidak tampil, halaman seperti OpenSID standar
+      Sebab  : tema aktif bukan "esensi".
+      Solusi : lihat C-1.
+
+ G-12. Ikon hilang di sebagian halaman
+      Sebab  : Font Awesome dimuat dari CDN, dan hanya dipanggil bila
+               cek_koneksi_internet() bernilai true.
+      Catatan: ikon di Hero, Aksi Cepat, dan kartu Potensi memakai inline
+               SVG sehingga TETAP tampil walau CDN tak terjangkau. Yang
+               hilang hanya ikon di bagian bawaan tema. Ini normal.
+
+ G-13. Suntingan pada C:\laragon\etc\apache2\mod_php.conf hilang sendiri
+      Sebab  : berkas itu auto-generated; Laragon menulisnya ulang setiap
+               start dari pilihan PHP-nya sendiri.
+      Solusi : ganti versi PHP dari MENU Laragon, jangan dari berkas (B-2).
+
+
+================================================================================
+ BAGIAN H — KERANGKA ToDoPribadi.txt (untuk perangkat baru)
+================================================================================
+
+ ToDoPribadi.txt sengaja diabaikan git (.gitignore) karena memuat path lokal
+ dan bisa memuat kredensial. Satu berkas untuk satu perangkat, JANGAN
+ di-commit dan JANGAN diunggah ke hosting.
+
+ Salin kerangka di bawah ini ke ToDoPribadi.txt lalu isi sesuai perangkat:
+
+ -----------------------------------------------------------------------------
+  IDENTITAS PERANGKAT
+      Nama perangkat / pemilik  :
+      Sistem operasi            :
+      Stack lokal               : Laragon / XAMPP / Docker / lainnya
+      Tanggal setup             :
+
+  NILAI PLACEHOLDER DI PERANGKAT INI
+      <PROYEK>     :
+      <PHPDIR>     :
+      <URL-LOKAL>  :
+      Nama database:
+
+  KONDISI PRASYARAT (isi hasil pemeriksaan, jangan diasumsikan)
+      php -v (CLI)              :
+      PHP yang dipakai Apache   :
+      Ekstensi yang masih mati  :
+      composer check-platform-reqs :
+
+  SUDAH DIKERJAKAN DI PERANGKAT INI
+      [x] ...
+
+  BELUM DIKERJAKAN / SISA
+      [ ] ...
+
+  BEDA DARI ToDoBooting.txt DI PERANGKAT INI
+      (contoh: kasus letak folder mana yang berlaku di B-7, versi PHP yang
+       dipakai, keterbatasan hak akses, hal yang gagal dan akalnya)
+
+  CATATAN KEAMANAN
+      (kredensial apa yang pernah terekspos, sudah diganti atau belum,
+       lokasi berkas backup yang memuat password)
+ -----------------------------------------------------------------------------
+
+
+================================================================================
+ LAMPIRAN — LOKASI BERKAS PENTING
+================================================================================
+
+ Konfigurasi database (default)  : donjo-app/config/database.php
+ Konfigurasi database (EFEKTIF)  : desa/config/database.php
+ Prasyarat instalasi             : donjo-app/config/installer.php
+ Controller installer            : donjo-app/controllers/Install.php
+ Controller backup/restore       : donjo-app/controllers/Database.php
+ Pustaka migrasi                 : app/Libraries/Database.php
+ Berkas migrasi                  : donjo-app/models/migrations/
+ Versi aplikasi                  : donjo-app/helpers/opensid_helper.php:85
+ Controller beranda              : donjo-app/controllers/fweb/Utama.php
+ Data bersama semua halaman web  : donjo-app/core/Web_Controller.php
+ Pemindai tema                   : donjo-app/helpers/theme_helper.php:208
+ Contoh .htaccess                : htaccess.apache.txt
+ Cache view terkompilasi         : storage/framework/views/
+ Log aplikasi                    : storage/logs/
+
+ Halaman depan Cintamulya:
+   storage/app/themes/esensi/resources/views/
+     partials/artikel/index.blade.php                  <- orkestrator
+     layouts/beranda.blade.php                         <- layout + slot ATF
+     partials/cintamulya/styles.blade.php              <- critical CSS
+     partials/cintamulya/hero.blade.php                <- hero + 2 CTA
+     partials/cintamulya/aksi_cepat.blade.php          <- 4 pintasan
+     partials/cintamulya/potensi.blade.php             <- 3 kolom keunikan
+     partials/cintamulya/statistik_penduduk.blade.php  <- widget kependudukan
+
+ Data yang WAJIB di-backup (tidak ada di git):
+   desa/                        <- konfigurasi + SELURUH berkas unggahan
+   database (dump .sql)
+   .htaccess
+   desa/config/database.php
+
+================================================================================
+ Disusun untuk keperluan KKN Desa Cintamulya, Kecamatan Candipuro,
+ Kabupaten Lampung Selatan. Perbarui berkas ini setiap kali proses deploy
+ berubah. Hal yang khas satu perangkat -> tulis di ToDoPribadi.txt.
+================================================================================

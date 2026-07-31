@@ -6,7 +6,8 @@
             @endphp
             @if (is_file($img))
                 <figure class="h-48 lg:h-[400px] w-full">
-                    <img src="{{ base_url($img) }}" alt="{{ $data['judul'] }}" class="max-w-full w-full h-48 lg:h-[400px] object-cover">
+                    {{-- Slider berada di bawah lipatan pada halaman depan: semua slide di-lazy-load --}}
+                    <img src="{{ base_url($img) }}" alt="{{ $data['judul'] }}" width="1200" height="400" loading="lazy" decoding="async" class="max-w-full w-full h-48 lg:h-[400px] object-cover">
 
                     @if ($slider_gambar['sumber'] != 3)
                         <div class="absolute bg-black bg-opacity-60 bottom-0 left-0 right-0 text-white group">

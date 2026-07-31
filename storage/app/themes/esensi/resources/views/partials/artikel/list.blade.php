@@ -6,7 +6,8 @@
 
 <div class="max-w-full w-full bg-white shadow rounded-lg p-3 lg:p-5 border overflow-auto mt-5">
     <figure class="h-auto lg:h-32 w-1/3 float-left pr-3 pb-3">
-        <img src="{{ $image }}" alt="{{ $post['judul'] }}" class="lg:h-32 object-cover object-center max-w-full mx-auto h-auto">
+        {{-- Below-the-fold: ditunda muat agar tidak menahan render awal halaman --}}
+        <img src="{{ $image }}" alt="{{ $post['judul'] }}" width="400" height="128" loading="lazy" decoding="async" class="lg:h-32 object-cover object-center max-w-full mx-auto h-auto">
     </figure>
     <div class="space-y-3">
         <a href="{{ $url }}" class="text-h5 hover:text-primary-100">{{ potong_teks($post['judul'], 80) }}{{ strlen($post['judul']) > 80 ? '...' : '' }}</a>
