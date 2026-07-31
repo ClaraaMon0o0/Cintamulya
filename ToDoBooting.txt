@@ -22,6 +22,10 @@
      BAGIAN A-C = menyalakan di komputer lokal
      BAGIAN D-F = naik ke internet (hosting)
      BAGIAN G   = troubleshooting
+     BAGIAN I   = pengisian konten & pemutakhiran data
+                  (BUKAN soal pemasangan — pekerjaan bersama perangkat desa,
+                   boleh dikerjakan kapan saja)
+     BAGIAN J   = catatan memilih layanan pendukung (hosting, database online)
      BAGIAN H   = kerangka ToDoPribadi.txt
 
  Notasi placeholder yang dipakai di berkas ini:
@@ -516,21 +520,46 @@
  dari dalam repo — nama menu di hPanel Hostinger bisa bergeser sewaktu-waktu.
  Prinsip dan nilai teknisnya tetap sesuai kebutuhan OpenSID.
 
+ ###########################################################################
+ ###                                                                     ###
+ ###   !!!  B A C A   I N I   S E B E L U M   M E M B A Y A R  !!!       ###
+ ###                                                                     ###
+ ###   JANGAN BELI PAKET HOSTING APA PUN sebelum penyedia MEMASTIKAN     ###
+ ###   SECARA TERTULIS bahwa ketiga hal ini tersedia:                    ###
+ ###                                                                     ###
+ ###       1.  PHP versi 8.1, 8.2, atau 8.3   (BUKAN 8.4 ke atas)        ###
+ ###       2.  Ekstensi  tidy                                            ###
+ ###       3.  Ekstensi  intl                                            ###
+ ###                                                                     ###
+ ###   Kenapa sekeras ini:                                               ###
+ ###   - "tidy" TIDAK selalu ada di paket shared murah, dan di hosting   ###
+ ###     Anda TIDAK BISA memasangnya sendiri. Tanpa tidy, installer      ###
+ ###     OpenSID berhenti di langkah "Server" dan TIDAK ADA jalan        ###
+ ###     memutarnya. Uang paket sudah telanjur keluar.                   ###
+ ###   - "intl" tidak diperiksa installer, jadi seolah aman — padahal    ###
+ ###     dituntut paket mike42/escpos-php. Kalau tidak ada, situs baru   ###
+ ###     bermasalah SETELAH dipakai, dan itu jauh lebih sulit dilacak.   ###
+ ###   - PHP 8.4 ditolak mentah-mentah oleh pemeriksa versi installer.   ###
+ ###     Banyak penyedia sekarang default 8.4.                           ###
+ ###                                                                     ###
+ ###   KALIMAT UNTUK DITANYAKAN KE LIVE CHAT (salin apa adanya):         ###
+ ###                                                                     ###
+ ###     "Apakah paket ini bisa memakai PHP 8.2 atau 8.3, dan apakah     ###
+ ###      ekstensi PHP tidy, intl, dan exif bisa saya aktifkan?"         ###
+ ###                                                                     ###
+ ###   SIMPAN tangkapan layar jawabannya. Kalau jawabannya tidak bisa,   ###
+ ###   CARI PENYEDIA LAIN — jangan berharap bisa diakali nanti.          ###
+ ###                                                                     ###
+ ###########################################################################
+
  [ ] D-1. Pilih paket hosting yang memenuhi syarat
           Yang WAJIB dipastikan SEBELUM bayar:
-              [ ] Bisa memilih PHP 8.1-8.3 (BUKAN terkunci di 8.4)
-              [ ] Ekstensi tidy tersedia/bisa diaktifkan
-              [ ] Ekstensi intl & openssl tersedia
+              [ ] PHP 8.1-8.3 (BUKAN terkunci di 8.4)   <- lihat kotak di atas
+              [ ] Ekstensi tidy tersedia/bisa diaktifkan <- lihat kotak di atas
+              [ ] Ekstensi intl & openssl tersedia       <- lihat kotak di atas
               [ ] Kuota disk cukup — folder vendor/ saja puluhan MB
+              [ ] Database MySQL/MariaDB (BUKAN PostgreSQL — lihat J-3)
               [ ] Akses SSH (sangat membantu, tidak wajib)
-
-          !! RISIKO TERBESAR: ekstensi "tidy" tidak selalu tersedia di paket
-             shared termurah, dan di hosting Anda TIDAK bisa memasangnya
-             sendiri. Tanyakan ke live chat SEBELUM membeli:
-             "Apakah ekstensi PHP tidy, intl, dan exif bisa diaktifkan
-              di paket ini?"
-             Bila tidak bisa, installer OpenSID mentok di langkah "Server"
-             dan tidak ada cara melewatinya.
 
  [ ] D-2. Siapkan domain
               a) Domain desa resmi : cintamulya.desa.id
@@ -753,6 +782,126 @@
       Sebab  : berkas itu auto-generated; Laragon menulisnya ulang setiap
                start dari pilihan PHP-nya sendiri.
       Solusi : ganti versi PHP dari MENU Laragon, jangan dari berkas (B-2).
+
+
+================================================================================
+ BAGIAN I — PENGISIAN KONTEN & PEMUTAKHIRAN DATA
+================================================================================
+
+ CATATAN: bagian ini TIDAK berhubungan dengan pemasangan sistem.
+ Sistemnya sudah jalan; yang dibahas di sini adalah pekerjaan ISI —
+ dikerjakan bersama perangkat desa, bukan oleh yang memasang aplikasi.
+ Boleh dikerjakan kapan saja, tidak menghalangi langkah lain.
+
+ -------------------------------------------------------------------------
+ I-1. APBDes / Keuangan Desa — MASIH KOSONG
+ -------------------------------------------------------------------------
+ Tabel keuangan_ta_* tidak berisi satu baris pun. Akibatnya:
+   - Kartu "Transparansi Pemerintahan" di halaman depan terasa hampa
+   - Widget keuangan di sidebar tidak menampilkan apa pun
+   - Janji keterbukaan anggaran pada narasi hero belum ada buktinya
+
+ Cara mengisi — pilih salah satu:
+   [ ] a. Impor dari Siskeudes
+          Admin > Keuangan. OpenSID menyediakan jalur impor dari aplikasi
+          Siskeudes yang dipakai bendahara desa. Ini cara paling cepat dan
+          paling akurat karena datanya sudah resmi.
+   [ ] b. Input manual
+          Admin > Keuangan > isi per tahun anggaran. Melelahkan bila banyak
+          tahun; pertimbangkan hanya mengisi 1-2 tahun terakhir.
+
+ Yang perlu diminta ke perangkat desa:
+   [ ] Dokumen APBDes tahun berjalan (dan tahun sebelumnya bila ada)
+   [ ] Akses/ekspor data Siskeudes dari bendahara desa
+   [ ] Kesepakatan: sampai rincian mana yang boleh dipublikasikan
+
+ -------------------------------------------------------------------------
+ I-2. Data penduduk sudah BASI — perlu pemutakhiran
+ -------------------------------------------------------------------------
+ Data berasal dari snapshot Februari 2025. Terhitung sejak itu belum ada
+ pencatatan kelahiran, kematian, dan perpindahan. Situs lama sudah mati,
+ jadi TIDAK ADA sumber pembanding yang lebih baru.
+
+ !! PENTING DISAMPAIKAN KE PIHAK DESA SEBELUM SITUS DIPUBLIKASIKAN.
+    Angka di halaman depan akan dibaca warga sebagai data terkini. Kalau
+    tidak dijelaskan, situs justru menyebarkan informasi yang keliru.
+
+ Langkah pemutakhiran:
+   [ ] Minta data mutasi penduduk dari operator desa sejak Februari 2025
+       (kelahiran, kematian, pindah datang, pindah keluar)
+   [ ] Masukkan lewat Admin > Kependudukan > Penduduk
+       (jangan lewat impor massal kalau hanya sedikit — risiko duplikat)
+   [ ] Setelah selesai, cocokkan total dengan catatan resmi desa
+   [ ] Sepakati siapa yang bertanggung jawab memperbarui secara rutin,
+       dan seberapa sering
+
+ Sementara belum dimutakhirkan, pertimbangkan menambah keterangan kecil
+ di dekat widget statistik, misalnya: "Data per Februari 2025".
+
+ -------------------------------------------------------------------------
+ I-3. Nomor anggota kelompok diisi otomatis — perlu dicocokkan
+ -------------------------------------------------------------------------
+ Saat upgrade database, OpenSID 24.07 mewajibkan nomor anggota unik dalam
+ satu kelompok. Data lama punya banyak nomor kosong, sehingga sistem
+ mengisinya dengan nomor urut. Rinciannya ada di ToDoPribadi.txt.
+
+   [ ] Cocokkan dengan buku/dokumen resmi kelompok bila desa memilikinya
+   [ ] Bila tidak ada dokumen resminya, nomor urut ini bisa dipakai apa adanya
+
+ -------------------------------------------------------------------------
+ I-4. Artikel bawaan OpenSID masih tercampur dengan artikel desa
+ -------------------------------------------------------------------------
+ Sebagian artikel adalah contoh bawaan OpenSID (bertanggal 2013-2016,
+ mis. "Awal mula SID", "Undang Undang", "Peraturan Pemerintah"). Sebagian
+ lagi artikel asli desa (2020-2024).
+
+   [ ] Tinjau Admin > Web > Artikel, urutkan berdasarkan tanggal
+   [ ] Artikel contoh yang tidak relevan: arsipkan atau hapus
+   [ ] Halaman statis yang masih berguna (Profil Desa, Kontak Kami,
+       Badan Permusyawaratan Desa): ISI ULANG dengan data Cintamulya,
+       jangan dibiarkan berisi teks contoh
+   [ ] Pastikan tidak ada teks contoh yang menyebut desa lain
+
+
+================================================================================
+ BAGIAN J — CATATAN MEMILIH LAYANAN PENDUKUNG
+================================================================================
+
+ J-1. Prinsip: OpenSID butuh hosting PHP klasik, bukan platform modern
+      Aplikasi ini CodeIgniter 3 + PHP, mengandalkan berkas di disk
+      (folder desa/) dan database MySQL. Ia TIDAK cocok dengan platform
+      serverless/edge (Vercel, Netlify, Cloudflare Pages) karena tidak ada
+      disk permanen untuk menyimpan unggahan.
+
+ J-2. Yang dibutuhkan minimal
+      - PHP 8.1-8.3 dengan 14 ekstensi (BAGIAN A)
+      - MySQL 5.7+ atau MariaDB 10.3+
+      - Disk permanen untuk folder desa/
+      - Apache/LiteSpeed dengan mod_rewrite
+
+ J-3. !! SUPABASE TIDAK BISA DIPAKAI UNTUK OpenSID
+      Supabase berbasis PostgreSQL, sedangkan OpenSID memakai driver
+      mysqli dan SQL khas MySQL. Bukan sekadar beda pengaturan — query,
+      tipe kolom, dan fungsi bawaannya berbeda. Tidak akan jalan.
+
+      Kalau butuh database online sementara sebelum hosting siap, cari yang
+      menyediakan MySQL/MariaDB. Yang perlu diperiksa sebelum memilih:
+        [ ] Benar-benar MySQL/MariaDB, bukan PostgreSQL
+        [ ] Mengizinkan koneksi dari luar (remote host), bukan hanya localhost
+        [ ] Kuota cukup (database ini ~6 MB, ringan)
+        [ ] Ada jalur ekspor/impor .sql yang mudah
+
+      !! Ingat: memindahkan DATABASE saja TIDAK CUKUP. Folder desa/ berisi
+         foto dan dokumen tetap harus ada di disk tempat aplikasi berjalan.
+         Database online + aplikasi lokal berarti gambar tetap dilayani
+         dari komputer lokal.
+
+      !! Database berisi data pribadi 5.158 warga. Menaruhnya di layanan
+         pihak ketiga gratisan perlu dipikirkan masak-masak: siapa
+         pemiliknya, di negara mana servernya, dan apa kata pemerintah desa.
+         Untuk sekadar berbagi antar anggota tim, memindahkan berkas .sql
+         (BAGIAN 2 di ToDoPribadi.txt) jauh lebih aman daripada menaruh
+         database online.
 
 
 ================================================================================
