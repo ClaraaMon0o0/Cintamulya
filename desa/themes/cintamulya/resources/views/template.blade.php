@@ -15,6 +15,36 @@
 </head>
 
 <body class="font-primary bg-gray-100">
+    {{--
+        Skip-link — WCAG 2.1 kriteria 2.4.1 (Bypass Blocks).
+        Tersembunyi sampai difokuskan lewat tombol Tab. Harus menjadi elemen
+        PERTAMA di dalam <body>, sebelum header, supaya benar-benar melewati
+        menu. Tanpa ini, pengguna keyboard dan pembaca layar harus menyusuri
+        seluruh menu bertingkat lebih dulu di SETIAP halaman.
+        Nol JavaScript; hanya CSS.
+    --}}
+    <a href="#konten" class="cm-skip">Lompat ke konten utama</a>
+    <style>
+        .cm-skip {
+            position: absolute;
+            left: -9999px;
+            top: 0;
+            z-index: 9999;
+            padding: 0.75rem 1.25rem;
+            background: #14532d;
+            color: #fff;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 0 0 10px 0;
+        }
+
+        .cm-skip:focus {
+            left: 0;
+            outline: 3px solid #ffd166;
+            outline-offset: 2px;
+        }
+    </style>
+
     @include('theme::commons.loading_screen')
     @include('theme::commons.header')
 

@@ -7,7 +7,7 @@
             @include('theme::partials.sidebar')
         </div>
         {{-- Content --}}
-        <main class="lg:w-2/3 w-full bg-white rounded-lg px-4 py-2 lg:py-4 lg:px-5 shadow">
+        <main id="konten" class="lg:w-2/3 w-full bg-white rounded-lg px-4 py-2 lg:py-4 lg:px-5 shadow">
             @yield('content')
         </main>
     </div>
