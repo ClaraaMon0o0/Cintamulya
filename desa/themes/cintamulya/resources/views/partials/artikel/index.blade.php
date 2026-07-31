@@ -66,6 +66,13 @@
 {{-- Critical CSS + preload gambar hero. WAJIB di level teratas (di luar @section). --}}
 @include('theme::partials.cintamulya.styles')
 
+{{-- Animasi Anime.js. Hanya dimuat di beranda, dan hanya bila ada koneksi.
+     Halaman tetap utuh bila skripnya gagal dimuat — lihat catatan di dalamnya.
+     Untuk mematikan animasi sepenuhnya: cukup komentari satu baris ini. --}}
+@if ($cmBeranda)
+    @include('theme::partials.cintamulya.animasi')
+@endif
+
 {{--
 |--------------------------------------------------------------------------
 | ABOVE-THE-FOLD (full width) — hanya di beranda

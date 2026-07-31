@@ -37,10 +37,24 @@
             --cm-accent-600: #7c2d12;       /* 9.0:1  — hover */
             --cm-teal: #115e59;             /* 7.6:1  — hue ketiga, dipakai hemat */
 
+            /* --- Isyarat "smart village" tanpa satu kata pun ---
+               Hijau bicara soal keasrian dan pertanian; ia hangat dan organik.
+               Untuk sisi teknologinya dipakai SIAN — satu-satunya warna dingin
+               di palet ini. Kontrasnya terhadap hijau itulah yang membaca
+               sebagai "desa + digital", bukan tulisan.
+               Aturan pakainya ketat: hanya untuk garis tipis, titik, dan
+               isyarat data. TIDAK PERNAH jadi blok besar, supaya tetap terasa
+               desa dan tidak berubah jadi dasbor korporat. */
+            --cm-tech: #0e7490;             /* 5.4:1  — sian tua, aman untuk teks kecil */
+            --cm-tech-600: #155e75;         /* 7.0:1  — hover */
+            --cm-tech-glow: #22d3ee;        /* sian terang — HANYA di latar gelap:
+                                               garis rambut, titik grid, denyut */
+
             /* --- Tint & netral hangat (bukan abu dingin) --- */
             --cm-primary-tint: #eef4ef;
             --cm-accent-tint: #fbf1ea;
             --cm-teal-tint: #e9f2f1;
+            --cm-tech-tint: #e8f4f8;
             --cm-surface: #ffffff;
             --cm-surface-warm: #faf9f6;     /* krem sangat tipis, memecah monoton putih */
             --cm-line: #e4e1da;
@@ -79,6 +93,39 @@
             --cm-shadow-3: 0 4px 8px rgba(28, 25, 23, .05), 0 14px 32px -8px rgba(28, 25, 23, .16);
 
             --cm-max: 1180px;
+        }
+
+        /* ==========================================================================
+           1b. PENANGKAL CSS GLOBAL HIGHCHARTS  — JANGAN DIHAPUS
+           ==========================================================================
+           Widget statistik di sidebar memuat Highcharts. Pustaka itu MENYUNTIKKAN
+           <style> ke halaman berisi:
+
+               .highcharts-container, svg:not(:root) {
+                   position: absolute; overflow: visible !important;
+               }
+
+           Aturan itu mengenai SETIAP <svg> di halaman, bukan hanya grafiknya.
+           Akibatnya seluruh ikon inline kita keluar dari alur flex lalu
+           menumpuk di atas teks, dan tombolnya menciut (terbukti: lebar
+           .cm-btn hanya 49px, ikon jadi position:absolute).
+
+           Karena suntikannya terjadi saat runtime — jadi selalu datang SESUDAH
+           stylesheet kita — kekhususan yang sama tidak cukup. Di sinilah
+           !important memang dibenarkan: kita menangkal deklarasi global pihak
+           ketiga, bukan menang-menangan dengan kode sendiri.
+
+           Cakupannya sengaja dibatasi pada komponen ber-prefix .cm- saja,
+           supaya grafik Highcharts yang asli TIDAK ikut terganggu. */
+        .cm-hero svg,
+        .cm-quick svg,
+        .cm-section svg,
+        .cm-stat svg,
+        .cm-card svg,
+        .cm-btn svg,
+        .cm-link svg {
+            position: static !important;
+            overflow: visible;
         }
 
         /* ==========================================================================
@@ -169,7 +216,27 @@
                 linear-gradient(180deg, rgba(12, 45, 25, .55) 0%, rgba(12, 45, 25, 0) 40%);
         }
 
-        /* Garis tipis di dasar hero, menyambung ke strip aksi cepat */
+        /* Kisi titik sian tipis di atas foto — isyarat "terhubung/digital".
+           Sengaja SANGAT samar (opacity rendah) dan memudar ke kanan, supaya
+           terbaca sebagai tekstur, bukan wallpaper teknologi. Inilah cara
+           menyampaikan smart village tanpa menuliskannya.
+           Murni CSS: nol permintaan jaringan, nol gambar tambahan. */
+        .cm-hero__grid {
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background-image:
+                radial-gradient(circle at center, rgba(34, 211, 238, .55) 1px, transparent 1.2px);
+            background-size: 26px 26px;
+            -webkit-mask-image: linear-gradient(105deg, transparent 0%, rgba(0, 0, 0, .5) 38%, rgba(0, 0, 0, .95) 100%);
+            mask-image: linear-gradient(105deg, transparent 0%, rgba(0, 0, 0, .5) 38%, rgba(0, 0, 0, .95) 100%);
+            opacity: .35;
+        }
+
+        /* Garis tipis di dasar hero, menyambung ke strip aksi cepat.
+           Sian ditaruh di ujung kanan supaya "arah bacanya" berakhir pada
+           isyarat teknologi, sementara pangkalnya tetap hangat/organik. */
         .cm-hero::after {
             content: "";
             position: absolute;
@@ -177,7 +244,11 @@
             right: 0;
             bottom: 0;
             height: 4px;
-            background: linear-gradient(90deg, var(--cm-accent) 0%, var(--cm-primary-500) 55%, var(--cm-teal) 100%);
+            background: linear-gradient(90deg,
+                    var(--cm-accent) 0%,
+                    var(--cm-primary-500) 45%,
+                    var(--cm-teal) 75%,
+                    var(--cm-tech-glow) 100%);
         }
 
         .cm-hero__inner {

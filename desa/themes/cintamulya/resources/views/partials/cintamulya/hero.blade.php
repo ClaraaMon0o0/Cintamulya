@@ -29,6 +29,9 @@
         >
     @endif
     <div class="cm-hero__scrim" aria-hidden="true"></div>
+    {{-- Kisi titik sian: isyarat visual "smart village" tanpa satu kata pun.
+         Murni dekoratif, karena itu disembunyikan dari pembaca layar. --}}
+    <div class="cm-hero__grid" aria-hidden="true"></div>
 
     <div class="cm-hero__inner">
         <p class="cm-hero__eyebrow">
