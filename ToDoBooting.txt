@@ -440,18 +440,30 @@
  Memeriksa hasil kerja tema di:
      storage/app/themes/esensi/resources/views/
 
- [ ] C-1. Aktifkan tema "esensi"
-          Admin > Pengaturan Website (atau Tema) > pilih Esensi > Simpan.
-          Halaman depan Cintamulya dibangun di atas tema ini. Bila tema lain
-          (mis. natra) yang aktif, hero & kartu potensi TIDAK akan tampil.
+ [ ] C-1. Aktifkan tema "Cintamulya"
+          Admin > menu Tema > pilih Cintamulya > aktifkan.
+
+          !! Bila tema "Cintamulya" TIDAK MUNCUL di daftar, klik tombol
+             "Pindai" lebih dulu. Ini normal pada pemasangan baru —
+             penjelasan lengkapnya di G-14.
+
+          Halaman depan hanya tampil bila tema ini aktif. Dengan tema lain
+          (Esensi bawaan atau Natra), yang muncul adalah tampilan OpenSID
+          standar tanpa hero, kartu potensi, dan widget kependudukan.
 
           Catatan arsitektur: OpenSID memindai DUA lokasi tema
           (donjo-app/helpers/theme_helper.php baris 208):
-              storage/app/themes/*   -> "Tema bawaan sistem"  (ter-track git)
-              desa/themes/*          -> "Tema buatan desa"    (diabaikan git)
-          Berkas Cintamulya saat ini berada di lokasi PERTAMA, sehingga bisa
-          tertimpa saat OpenSID/tema Esensi diperbarui. Rencana pemindahan ke
-          desa/themes/ dicatat sebagai pekerjaan lanjutan.
+              storage/app/themes/*   -> "Tema bawaan sistem"
+                                        ditimpa saat OpenSID diperbarui
+              desa/themes/*          -> "Tema buatan desa"
+                                        aman dari pembaruan
+          Tema Cintamulya diletakkan di desa/themes/cintamulya, dan
+          .gitignore diberi pengecualian !desa/themes/ supaya tetap ikut git
+          sehingga bisa dibagikan ke anggota tim lain.
+
+          Tema terdiri dari DUA bagian yang datang lewat jalur berbeda:
+          BERKAS-nya lewat git, PENDAFTARAN-nya lewat database. Keduanya
+          harus ada. Inilah sebabnya tombol "Pindai" kadang diperlukan.
 
  [ ] C-2. Bersihkan cache view yang sudah terkompilasi
               Windows / PowerShell:
@@ -768,8 +780,41 @@
                browser (Ctrl+Shift+R).
 
  G-11. Hero Section tidak tampil, halaman seperti OpenSID standar
-      Sebab  : tema aktif bukan "esensi".
-      Solusi : lihat C-1.
+      Sebab  : tema Cintamulya belum aktif. Lihat C-1 dan G-14.
+
+ G-14. Tema "Cintamulya" TIDAK MUNCUL di daftar tema admin
+      Ini yang paling sering terjadi pada anggota tim yang baru memasang.
+
+      Sebab: tema terdiri dari DUA bagian yang datang lewat jalur berbeda —
+        (a) BERKAS tema  -> ikut git, di desa/themes/cintamulya
+        (b) PENDAFTARAN  -> baris di tabel `theme` di dalam database
+      Kalau berkas dump database dibuat SEBELUM tema dipindah/dibuat, maka
+      database tidak memuat baris pendaftarannya. Berkasnya ada, tapi
+      OpenSID belum tahu tema itu ada.
+
+      Solusi (semua lewat panel admin, tidak perlu baris perintah):
+
+        [ ] 1. Pastikan berkasnya benar-benar ada:
+                   desa/themes/cintamulya/composer.json
+               Kalau tidak ada, repo belum lengkap:
+                   git checkout master
+                   git pull
+               (tema HANYA ada di branch master, TIDAK ada di branch umum)
+
+        [ ] 2. Masuk admin > menu Tema > klik tombol "Pindai"
+               (Theme::pindai() akan memindai ulang storage/app/themes dan
+                desa/themes, lalu mendaftarkan tema yang belum tercatat)
+
+        [ ] 3. Tema "Cintamulya" akan muncul sebagai tema buatan desa.
+               Klik aktifkan.
+
+        [ ] 4. Kosongkan cache tampilan:
+                   Windows : Remove-Item "storage\framework\views\*" -Recurse -Force
+                   Linux   : rm -rf storage/framework/views/*
+
+      Catatan untuk yang MENGIRIM paket data: buat dump database SESUDAH
+      semua perubahan tema selesai, supaya baris pendaftaran tema ikut
+      terbawa dan penerima tidak perlu memindai manual.
 
  G-12. Ikon hilang di sebagian halaman
       Sebab  : Font Awesome dimuat dari CDN, dan hanya dipanggil bila
