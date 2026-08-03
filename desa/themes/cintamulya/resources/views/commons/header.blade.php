@@ -2,7 +2,7 @@
     $bg_header = $latar_website ?: theme_asset('images/header-bg.jpg');
 @endphp
 
-<div class="container md:px-4 lg:px-5">
+<div class="w-full">
     <header style="background-image: url({{ $bg_header }});" class="bg-center bg-cover bg-no-repeat relative text-white">
         <div class="absolute bg-gray-800 bg-opacity-60 top-0 left-0 right-0 h-full">
         </div>

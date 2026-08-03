@@ -212,8 +212,8 @@
             inset: 0;
             z-index: -2;
             background:
-                linear-gradient(100deg, rgba(20, 83, 45, .72) 0%, rgba(20, 83, 45, .52) 45%, rgba(20, 83, 45, .32) 100%),
-                linear-gradient(180deg, rgba(12, 45, 25, .40) 0%, rgba(12, 45, 25, 0) 40%);
+                linear-gradient(100deg, rgba(20, 83, 45, .96) 0%, rgba(20, 83, 45, .88) 45%, rgba(20, 83, 45, .62) 100%),
+                linear-gradient(180deg, rgba(12, 45, 25, .55) 0%, rgba(12, 45, 25, 0) 40%);
         }
 
         /* Kisi titik sian tipis di atas foto — isyarat "terhubung/digital".
