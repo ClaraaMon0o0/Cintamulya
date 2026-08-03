@@ -9,10 +9,11 @@
 
         @include('theme::commons.category_menu')
 
-        <section class="relative z-10 text-center space-y-2 mt-3 px-3 lg:px-5">
+        <section class="relative z-10 text-center space-y-3 py-12 lg:py-16 px-3 lg:px-5">
             <a href="{{ site_url('/') }}">
-                <span class="text-h2 block">{{ $desa['nama_desa'] }}</span>
-                <p>{{ ucfirst(setting('sebutan_kecamatan_singkat')) }}
+                <span class="text-3xl lg:text-4xl font-bold block tracking-wide text-white drop-shadow-md">{{ $desa['nama_desa'] }}</span>
+                <p class="text-sm lg:text-base opacity-90 mt-2 font-normal text-white drop-shadow">
+                    {{ ucfirst(setting('sebutan_kecamatan_singkat')) }}
                     {{ ucwords($desa['nama_kecamatan']) }},
                     {{ ucfirst(setting('sebutan_kabupaten_singkat')) }}
                     {{ ucwords($desa['nama_kabupaten']) }},

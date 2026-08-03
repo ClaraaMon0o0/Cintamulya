@@ -15,23 +15,22 @@
     >
 
         <h5 class="text-h5 pt-5 pb-3 px-3 lg:hidden">Menu Kategori</h5>
-        <div class="flex lg:flex-row flex-col justify-between items-center relative z-10">
-            <div class="flex items-center gap-3 w-full lg:w-auto">
-                <a href="{{ site_url('/') }}" class="flex items-center gap-2 py-1 px-2 hover:opacity-90 transition-opacity shrink-0">
-                    <img src="{{ gambar_desa($desa['logo']) }}" alt="Logo {{ $desa['nama_desa'] }}" class="h-8 w-auto object-contain">
-                    <span class="font-bold text-white tracking-wide text-sm lg:inline-block hidden">{{ $desa['nama_desa'] }}</span>
+        <div class="flex lg:flex-row flex-col justify-between items-center relative z-10 gap-3">
+            <div class="flex items-center gap-4 w-full lg:w-auto">
+                <a href="{{ site_url('/') }}" class="flex items-center py-1 hover:opacity-90 transition-opacity shrink-0">
+                    <img src="{{ gambar_desa($desa['logo']) }}" alt="Logo {{ $desa['nama_desa'] }}" class="h-16 w-auto object-contain">
                 </a>
-                <ul class="w-full text-sm flex flex-wrap items-center">
+                <ul class="text-sm flex flex-row items-center flex-nowrap whitespace-nowrap gap-1">
                 @foreach ($menu_kiri as $menu)
-                    <li class="lg:inline-block">
-                        <a href="{{ site_url("{$alt_slug}/kategori/{$menu['slug']}") }}" class="block lg:inline-block py-2 px-3 hover:text-link">
+                    <li class="inline-block shrink-0">
+                        <a href="{{ site_url("{$alt_slug}/kategori/{$menu['slug']}") }}" class="inline-block py-2 px-3 hover:text-link whitespace-nowrap">
                             {{ $menu['kategori'] }}
                         </a>
                     </li>
                     @if (count($menu['submenu'] ?? []) > 0)
                         @foreach ($menu['submenu'] as $submenu)
-                            <li class="lg:inline-block">
-                                <a href="{{ site_url("{$alt_slug}/kategori/{$submenu['slug']}") }}" class="block lg:inline-block py-2 px-3 hover:text-link">
+                            <li class="inline-block shrink-0">
+                                <a href="{{ site_url("{$alt_slug}/kategori/{$submenu['slug']}") }}" class="inline-block py-2 px-3 hover:text-link whitespace-nowrap">
                                     {{ $submenu['kategori'] }}
                                 </a>
                             </li>
