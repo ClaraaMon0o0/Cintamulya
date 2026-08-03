@@ -1,5 +1,5 @@
 @php
-    $alt_slug = PREMIUM ? 'artikel' : 'first';
+    $alt_slug = defined('PREMIUM') && PREMIUM ? 'artikel' : 'first';
 @endphp
 
 <section x-data="{ catMenu: false }">
