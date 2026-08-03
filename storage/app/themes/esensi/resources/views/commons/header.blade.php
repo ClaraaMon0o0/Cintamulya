@@ -11,9 +11,6 @@
 
         <section class="relative z-10 text-center space-y-2 mt-3 px-3 lg:px-5">
             <a href="{{ site_url('/') }}">
-                <figure>
-                    <img src="{{ gambar_desa($desa['logo']) }}" alt="Logo {{ ucfirst(setting('sebutan_desa')) . ' ' . ucwords($desa['nama_desa']) }}" class="h-16 mx-auto pb-2">
-                </figure>
                 <span class="text-h2 block">{{ $desa['nama_desa'] }}</span>
                 <p>{{ ucfirst(setting('sebutan_kecamatan_singkat')) }}
                     {{ ucwords($desa['nama_kecamatan']) }},
@@ -23,20 +20,6 @@
                     {{ ucwords($desa['nama_propinsi']) }}
                 </p>
             </a>
-            @if ($w_gal)
-                <marquee onmouseover="this.stop();" onmouseout="this.start();" scrollamount="4" class="block w-10/12 lg:w-1/4 mx-auto">
-                    <div class="grid grid-flow-col gap-3 shadow-lg pt-2">
-                        @foreach ($w_gal as $album)
-                            @if (is_file(LOKASI_GALERI . 'kecil_' . $album['gambar']))
-                                @php $link = route('web.galeri.detail', $album['id']) @endphp
-                                <a href="{{ $link }}" class="block w-32 h-20" title="{{ $album['nama'] }}">
-                                    <img src="{{ AmbilGaleri($album['gambar'], 'kecil') }}" alt="{{ $album['nama'] }}" class="w-32 h-20 object-cover">
-                                </a>
-                            @endif
-                        @endforeach
-                    </div>
-                </marquee>
-            @endif
         </section>
         @if ($teks_berjalan)
             <div class="block px-3 bg-white text-white bg-opacity-20 py-1.5 text-xs mt-6 mb-0 z-20 relative">

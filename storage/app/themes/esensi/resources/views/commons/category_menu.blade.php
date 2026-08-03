@@ -16,7 +16,12 @@
 
         <h5 class="text-h5 pt-5 pb-3 px-3 lg:hidden">Menu Kategori</h5>
         <div class="flex lg:flex-row flex-col justify-between items-center relative z-10">
-            <ul class="w-full text-sm">
+            <div class="flex items-center gap-3 w-full lg:w-auto">
+                <a href="{{ site_url('/') }}" class="flex items-center gap-2 py-1 px-2 hover:opacity-90 transition-opacity shrink-0">
+                    <img src="{{ gambar_desa($desa['logo']) }}" alt="Logo {{ $desa['nama_desa'] }}" class="h-8 w-auto object-contain">
+                    <span class="font-bold text-white tracking-wide text-sm lg:inline-block hidden">{{ $desa['nama_desa'] }}</span>
+                </a>
+                <ul class="w-full text-sm flex flex-wrap items-center">
                 @foreach ($menu_kiri as $menu)
                     <li class="lg:inline-block">
                         <a href="{{ site_url("{$alt_slug}/kategori/{$menu['slug']}") }}" class="block lg:inline-block py-2 px-3 hover:text-link">
@@ -34,6 +39,7 @@
                     @endif
                 @endforeach
             </ul>
+            </div>
 
             <div class="flex flex-col lg:flex-row gap-3 mt-5 lg:mt-0 flex-wrap lg:justify-end w-full px-3">
                 @if (setting('layanan_mandiri') == 1)
