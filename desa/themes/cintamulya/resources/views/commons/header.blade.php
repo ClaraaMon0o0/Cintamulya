@@ -9,8 +9,11 @@
 
         @include('theme::commons.category_menu')
 
-        <section class="relative z-10 text-center space-y-3 py-12 lg:py-16 px-3 lg:px-5">
-            <a href="{{ site_url('/') }}">
+        <section class="relative z-10 text-center space-y-3 py-10 lg:py-14 px-3 lg:px-5">
+            <a href="{{ site_url('/') }}" class="inline-block">
+                <figure class="mb-2">
+                    <img src="{{ gambar_desa($desa['logo'] ?? null) }}" alt="Logo {{ $desa['nama_desa'] ?? '' }}" class="h-16 lg:h-20 mx-auto object-contain drop-shadow-lg">
+                </figure>
                 <span class="text-3xl lg:text-4xl font-bold block tracking-wide text-white drop-shadow-md">{{ $desa['nama_desa'] }}</span>
                 <p class="text-sm lg:text-base opacity-90 mt-2 font-normal text-white drop-shadow">
                     {{ ucfirst(setting('sebutan_kecamatan_singkat')) }}
