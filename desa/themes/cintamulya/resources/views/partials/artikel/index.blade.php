@@ -50,7 +50,7 @@
     $cm_nama_desa = $cmIdentitas($desa['nama_desa'] ?? null, 'Cintamulya');
     $cm_kecamatan = $cmIdentitas($desa['nama_kecamatan'] ?? null, 'Candipuro');
     $cm_kabupaten = $cmIdentitas($desa['nama_kabupaten'] ?? null, 'Lampung Selatan');
-    $cm_hero_bg = $latar_website ?? null;
+    $cm_hero_bg = $latar_website ?: theme_asset('images/header-bg.jpg');
 
     // --- Judul aliran artikel ----------------------------------------------
     $cmJudulAliran = 'Berita &amp; Informasi Desa';

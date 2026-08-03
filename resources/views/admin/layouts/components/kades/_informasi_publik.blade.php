@@ -4,7 +4,7 @@
         <select name="kategori_info_publik" class="form-control select2 input-sm required">
             <option value="">Pilih Kategori Informasi Publik</option>
             @foreach ($list_kategori_publik as $key => $value)
-                <option value="{{ $key }}" @selected($dokumen['kategori_info_publik'], $key)>
+                <option value="{{ $key }}" @selected($dokumen['kategori_info_publik'] == $key)>
                     {{ $value }}
                 </option>
             @endforeach
