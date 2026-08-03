@@ -1,5 +1,5 @@
 @php
-    $bg_header = $latar_website;
+    $bg_header = $latar_website ?: theme_asset('images/header-bg.jpg');
 @endphp
 
 <div class="container md:px-4 lg:px-5">
