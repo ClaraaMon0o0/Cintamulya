@@ -141,3 +141,8 @@ tests/.phpunit.cache/
 # Catatan setup khusus per-perangkat (berisi path lokal & kredensial).
 # ToDoBooting.txt bersifat umum dan TETAP di-commit.
 ToDoPribadi.txt
+
+# Claude AI agent folder
+.claude/
+.claude
+
