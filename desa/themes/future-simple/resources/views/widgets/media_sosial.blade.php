@@ -8,8 +8,36 @@
     </div>
     <div class="box-body" style="display:flex;flex-wrap:wrap;gap:.65rem;align-items:center;">
         @foreach ($sosmed as $data)
-            @if (!empty($data['link']))
-                <a href="{{ $data['link'] }}" target="_blank" rel="noopener noreferrer" style="width:40px;height:40px;border-radius:var(--r-md);overflow:hidden;box-shadow:var(--sh-sm);display:inline-flex;align-items:center;justify-content:center;transition:transform .2s;" title="{{ $data['nama'] }}">
+            @php
+                $link = trim($data['link'] ?? '');
+                if (!empty($link)) {
+                    if (str_starts_with($link, 'http://') || str_starts_with($link, 'https://')) {
+                        $finalUrl = $link;
+                    } else {
+                        $namaLow = strtolower($data['nama']);
+                        if (str_contains($namaLow, 'facebook')) {
+                            $finalUrl = 'https://facebook.com/' . $link;
+                        } elseif (str_contains($namaLow, 'instagram')) {
+                            $finalUrl = 'https://instagram.com/' . $link;
+                        } elseif (str_contains($namaLow, 'youtube')) {
+                            $finalUrl = 'https://youtube.com/channel/' . $link;
+                        } elseif (str_contains($namaLow, 'whatsapp')) {
+                            $finalUrl = 'https://wa.me/' . preg_replace('/[^0-9]/', '', $link);
+                        } elseif (str_contains($namaLow, 'telegram')) {
+                            $finalUrl = 'https://t.me/' . $link;
+                        } elseif (str_contains($namaLow, 'twitter') || str_contains($namaLow, 'x')) {
+                            $finalUrl = 'https://x.com/' . $link;
+                        } else {
+                            $finalUrl = 'https://' . $link;
+                        }
+                    }
+                } else {
+                    $finalUrl = '';
+                }
+            @endphp
+
+            @if (!empty($finalUrl))
+                <a href="{{ $finalUrl }}" target="_blank" rel="noopener noreferrer" style="width:40px;height:40px;border-radius:var(--r-md);overflow:hidden;box-shadow:var(--sh-sm);display:inline-flex;align-items:center;justify-content:center;transition:transform .2s;" title="{{ $data['nama'] }}">
                     <img src="{{ $data['icon'] }}" alt="{{ $data['nama'] }}" style="width:100%;height:100%;object-fit:cover;" />
                 </a>
             @endif
