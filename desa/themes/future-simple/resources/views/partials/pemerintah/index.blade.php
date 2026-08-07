@@ -11,7 +11,7 @@
                 'tweb_desa_pamong.*',
                 'ref_jabatan.nama as nama_jabatan'
             )
-            ->orderBy('tweb_desa_pamong.pamong_urutan', 'asc')
+            ->orderBy('tweb_desa_pamong.urut', 'asc')
             ->get();
     } catch (\Throwable $e) {}
 @endphp
@@ -49,6 +49,10 @@
         <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));gap:1.5rem;margin-bottom:2.5rem;">
             @foreach ($pamongList as $p)
                 @php
+                    $namaPamong = trim($p->pamong_nama);
+                    if (empty($namaPamong)) {
+                        $namaPamong = 'Pejabat Aparatur Desa';
+                    }
                     $fotoUrl = AmbilFoto($p->foto, 'kecil_', $p->pamong_sex ?? '1', LOKASI_USER_PICT);
                     $isKades = str_contains(strtolower($p->nama_jabatan ?? ''), 'kepala desa') || str_contains(strtolower($p->nama_jabatan ?? ''), 'kades');
                 @endphp
@@ -70,7 +74,7 @@
                     {{-- Foto Avatar Container --}}
                     <div style="padding:1.5rem 1rem 1rem;background:#f8fafc;display:flex;justify-content:center;align-items:center;border-bottom:1px solid var(--c-border);">
                         <div style="width:110px;height:110px;border-radius:50%;overflow:hidden;border:3px solid white;box-shadow:var(--sh-md);background:#e2e8f0;">
-                            <img src="{{ $fotoUrl }}" alt="{{ $p->pamong_nama }}" style="width:100%;height:100%;object-fit:cover;">
+                            <img src="{{ $fotoUrl }}" alt="{{ $namaPamong }}" style="width:100%;height:100%;object-fit:cover;">
                         </div>
                     </div>
 
@@ -78,7 +82,7 @@
                     <div style="padding:1.25rem 1rem;flex:1;display:flex;flex-direction:column;justify-content:space-between;">
                         <div>
                             <h3 style="font-size:1.05rem;font-weight:700;color:var(--c-text-head);margin-bottom:.35rem;line-height:1.3;">
-                                {{ $p->pamong_nama }}
+                                {{ $namaPamong }}
                             </h3>
                             <div style="color:var(--c-primary-dark);font-weight:600;font-size:.85rem;margin-bottom:.6rem;background:var(--c-primary-bg);display:inline-block;padding:.2rem .75rem;border-radius:var(--r-sm);">
                                 {{ $p->nama_jabatan ?? 'Aparatur Desa' }}
