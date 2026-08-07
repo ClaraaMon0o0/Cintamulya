@@ -11,7 +11,8 @@
                     <div style="width:140px;height:170px;margin:0 auto 1rem;border-radius:var(--r-md);overflow:hidden;box-shadow:var(--sh-sm);border:2px solid var(--c-primary-light);">
                         <img src="{{ $data['foto'] }}" alt="{{ $data['nama'] }}" style="width:100%;height:100%;object-fit:cover;">
                     </div>
-                    @if (getWidgetSetting('aparatur_desa', 'overlay') == true)
+                    @php /** @var string $widgetName */ $wName = 'aparatur_desa'; $wOpt = 'overlay'; @endphp
+                    @if (getWidgetSetting($wName, $wOpt) == true)
                         <div>
                             <strong style="display:block;font-size:.9rem;color:var(--c-text-head);margin-bottom:.2rem;">{{ $data['nama'] }}</strong>
                             <span style="display:block;font-size:.78rem;color:var(--c-primary);font-weight:600;margin-bottom:.35rem;">{{ $data['jabatan'] }}</span>

@@ -1,6 +1,6 @@
 @php
     $post = $single_artikel;
-    $alt_slug = PREMIUM ? 'artikel' : 'first';
+    $alt_slug = (defined('PREMIUM') && PREMIUM) ? 'artikel' : 'first';
 @endphp
 
 <nav aria-label="Breadcrumb" style="margin-bottom:1rem;">
