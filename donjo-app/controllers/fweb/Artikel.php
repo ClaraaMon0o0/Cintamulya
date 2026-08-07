@@ -50,6 +50,27 @@ class Artikel extends Web_Controller
     */
     public function index($thn = null, $bln = null, $hr = null, $url = null)
     {
+        if ($bln === null && $hr === null && $url === null && $thn !== null) {
+            $data_artikel = is_numeric($thn)
+                ? ModelsArtikel::sitemap()->diunggahSekarang()->find($thn)
+                : ModelsArtikel::sitemap()->diunggahSekarang()->where('slug', $thn)->first();
+
+            if (! $data_artikel) {
+                $cleanSearch = str_replace('-', '%', $thn);
+                $data_artikel = ModelsArtikel::sitemap()->diunggahSekarang()
+                    ->where('slug', 'like', "%{$thn}%")
+                    ->orWhere('judul', 'like', "%{$cleanSearch}%")
+                    ->first();
+            }
+
+            if ($data_artikel) {
+                $data_artikel['slug'] = $this->security->xss_clean($data_artikel['slug']);
+                redirect('artikel/' . buat_slug($data_artikel->toArray()));
+            }
+
+            show_404();
+        }
+
         if ($url == null || $thn == null || $bln == null || $hr == null) {
             show_404();
         }

@@ -3,19 +3,16 @@
 @endphp
 
 <div class="w-full">
-    <header style="background-image: url({{ $bg_header }});" class="bg-center bg-cover bg-no-repeat relative text-white">
+    <header style="background-image: url({{ $bg_header }}); background-attachment: scroll;" class="bg-center bg-cover bg-no-repeat relative text-white w-full">
         <div class="absolute bg-gray-800 bg-opacity-60 top-0 left-0 right-0 h-full">
         </div>
 
         @include('theme::commons.category_menu')
 
-        <section class="relative z-10 text-center space-y-3 py-10 lg:py-14 px-3 lg:px-5">
+        <section class="relative z-10 text-center space-y-4 py-24 lg:py-32 px-3 lg:px-5">
             <a href="{{ site_url('/') }}" class="inline-block">
-                <figure class="mb-2">
-                    <img src="{{ gambar_desa($desa['logo'] ?? null) }}" alt="Logo {{ $desa['nama_desa'] ?? '' }}" class="h-16 lg:h-20 mx-auto object-contain drop-shadow-lg">
-                </figure>
-                <span class="text-3xl lg:text-4xl font-bold block tracking-wide text-white drop-shadow-md">{{ $desa['nama_desa'] }}</span>
-                <p class="text-sm lg:text-base opacity-90 mt-2 font-normal text-white drop-shadow">
+                <span class="text-4xl lg:text-5xl font-extrabold block tracking-wide text-white drop-shadow-lg">{{ $desa['nama_desa'] }}</span>
+                <p class="text-base lg:text-lg opacity-90 mt-3 font-medium text-white drop-shadow">
                     {{ ucfirst(setting('sebutan_kecamatan_singkat')) }}
                     {{ ucwords($desa['nama_kecamatan']) }},
                     {{ ucfirst(setting('sebutan_kabupaten_singkat')) }}

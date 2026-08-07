@@ -1,0 +1,72 @@
+/* ============================================
+   FUTURISTIC SIMPLISM — COLOR & DESIGN TOKENS
+   Theme: future-simple (OpenSID Desa Cinta Mulya)
+   ============================================ */
+:root {
+  /* Primary — warna utama identitas desa */
+  --color-primary:        #16803c;   /* Hijau Utama */
+  --color-primary-dark:   #0a5b28;   /* Hover, footer background */
+  --color-primary-light:  #dcfce7;   /* Badge ringan, background section aksen */
+
+  /* Secondary / Accent — highlight & CTA sekunder */
+  --color-secondary:      #D08E0D;   /* Emas mustard */
+  --color-secondary-dark: #946200;   /* Hover secondary */
+
+  /* Status Colors */
+  --color-status-active:  #22c55e;   /* Dot hadir/online */
+  --color-status-away:    #f59e0b;   /* Dot belum hadir */
+  --color-status-offline: #ef4444;   /* Dot tidak hadir */
+
+  /* Background Hierarchy */
+  --color-bg-page:        #efefef;   /* Background halaman */
+  --color-bg-card:        #ffffff;   /* Card, modal, panel */
+  --color-bg-section-alt: #f0fdf4;   /* Section alternating */
+
+  /* Typography */
+  --color-text-heading:   #111827;   /* Gray-900 */
+  --color-text-body:      #374151;   /* Gray-700 */
+  --color-text-muted:     #6b7280;   /* Gray-500 */
+  --color-text-inverse:   #ffffff;   /* Teks atas background gelap */
+
+  /* Border */
+  --color-border:         #e5e7eb;   /* Gray-200 */
+  --color-border-primary: #16803c;   /* Border aksen primary */
+
+  /* Typography Scale */
+  --font-family-base: 'Poppins', system-ui, -apple-system, sans-serif;
+  --text-xs:   0.75rem;
+  --text-sm:   0.875rem;
+  --text-base: 1rem;
+  --text-lg:   1.125rem;
+  --text-xl:   1.25rem;
+  --text-2xl:  1.5rem;
+  --text-3xl:  1.875rem;
+  --text-4xl:  2.25rem;
+  --text-5xl:  3rem;
+
+  /* Font Weights */
+  --fw-light:   300;
+  --fw-regular: 400;
+  --fw-medium:  500;
+  --fw-bold:    700;
+
+  /* Spacing & Layout */
+  --container-max: 1140px;
+  --container-px:  1.5rem;
+  --section-py-sm: 2rem;
+  --section-py:    3rem;
+  --section-py-lg: 4rem;
+  --gap-grid:      1.5rem;
+  --card-padding:  1.5rem;
+
+  /* Border Radius */
+  --radius-sm:     0.25rem;
+  --radius-md:     0.5rem;
+  --radius-lg:     1rem;
+  --radius-pill:   9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.06);
+  --shadow-lg: 0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05);
+}

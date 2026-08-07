@@ -146,3 +146,6 @@ ToDoPribadi.txt
 .claude/
 .claude
 
+# Ignored doctrine files
+_doctrine/
+

@@ -1,0 +1,36 @@
+/* ============================================
+   FUTURISTIC SIMPLISM OVERRIDE
+   Theme: future-simple
+   ============================================ */
+:root {
+  --primary-base-color: #16803c;
+  --primary-darken-color: #0a5b28;
+  --secondary-base-color: #D08E0D;
+  --secondary-darken-color: #946200;
+  --accent-base-color: #dde408;
+  --accent-darken-color: #afac05;
+
+  --color-primary: #16803c;
+  --color-primary-dark: #0a5b28;
+  --color-bg-page: #efefef;
+  --color-bg-card: #ffffff;
+  --color-text-heading: #111827;
+  --color-text-body: #374151;
+}
+
+body {
+  font-family: 'Poppins', system-ui, -apple-system, sans-serif !important;
+  background-color: var(--color-bg-page) !important;
+}
+
+.navbar, .header, header {
+  border-bottom: 2px solid var(--color-primary) !important;
+}
+
+.btn-primary, .bg-primary {
+  background-color: var(--color-primary) !important;
+}
+
+a {
+  color: var(--color-primary);
+}

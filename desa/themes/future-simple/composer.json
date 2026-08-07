@@ -1,0 +1,17 @@
+{
+    "name": "themes/future-simple",
+    "type": "library",
+    "description": "Tema Futuristic Simplism Desa Cinta Mulya berdasarkan referensi Desa Timbang Purbalingga.",
+    "homepage": "https://github.com/ClaraaMon0o0/Cintamulya",
+    "license": "GPL-3.0-or-later",
+    "keywords": [
+        "Themes",
+        "OpenSID",
+        "Future-Simple"
+    ],
+    "authors": [
+        {
+            "name": "Tim KKN Desa Cinta Mulya"
+        }
+    ]
+}
