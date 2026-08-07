@@ -18,10 +18,10 @@
             {{-- Desktop Nav --}}
             <ul class="fs-nav-menu" role="navigation" aria-label="Menu utama">
                 <li>
-                    <a href="{{ site_url() }}" class="fs-nav-link active" id="nav-beranda">Beranda</a>
+                    <a href="{{ site_url() }}" class="fs-nav-link {{ request()->is('/') || request()->is('') ? 'active' : '' }}" id="nav-beranda">Beranda</a>
                 </li>
                 <li class="fs-dropdown">
-                    <a href="#" class="fs-nav-link" id="nav-profil">
+                    <a href="#" class="fs-nav-link {{ request()->is('first/artikel/*') || request()->is('data-wilayah') || request()->is('pemerintah') ? 'active' : '' }}" id="nav-profil">
                         Profil Desa <i class="fa-solid fa-chevron-down" style="font-size:.65rem;"></i>
                     </a>
                     <ul class="fs-dropdown-menu" aria-label="Profil Desa">
@@ -32,16 +32,16 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="{{ site_url('artikel/kategori/1') }}" class="fs-nav-link" id="nav-berita">Berita</a>
+                    <a href="{{ site_url('artikel/kategori/1') }}" class="fs-nav-link {{ request()->is('artikel*') ? 'active' : '' }}" id="nav-berita">Berita</a>
                 </li>
                 <li>
-                    <a href="{{ site_url('status-idm') }}" class="fs-nav-link" id="nav-idm">IDM</a>
+                    <a href="{{ site_url('status-idm') }}" class="fs-nav-link {{ request()->is('status-idm*') ? 'active' : '' }}" id="nav-idm">IDM</a>
                 </li>
                 <li>
-                    <a href="{{ site_url('galeri') }}" class="fs-nav-link" id="nav-galeri">Galeri</a>
+                    <a href="{{ site_url('galeri') }}" class="fs-nav-link {{ request()->is('galeri*') ? 'active' : '' }}" id="nav-galeri">Galeri</a>
                 </li>
                 <li>
-                    <a href="{{ site_url('pengaduan') }}" class="fs-nav-link" id="nav-layanan">Pengaduan</a>
+                    <a href="{{ site_url('pengaduan') }}" class="fs-nav-link {{ request()->is('pengaduan*') ? 'active' : '' }}" id="nav-layanan">Pengaduan</a>
                 </li>
             </ul>
 

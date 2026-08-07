@@ -3,23 +3,28 @@
     $alt_slug = PREMIUM ? 'artikel' : 'first';
 @endphp
 
-<nav role="navigation" aria-label="navigation" class="breadcrumb">
-    <ol>
-        <li><a href="{{ ci_route() }}">Beranda</a></li>
-        <li>{!! $post['kategori'] ? '<a href="' . ci_route("{$alt_slug}.kategori.{$post['kat_slug']}") . '">' . $post['kategori'] . '</a>' : 'Artikel' !!}</li>
-    </ol>
+<nav aria-label="Breadcrumb" style="margin-bottom:1rem;">
+    <div class="fs-breadcrumb" style="color:var(--c-text-muted);font-size:.82rem;display:flex;align-items:center;gap:.4rem;">
+        <a href="{{ site_url() }}" style="color:var(--c-primary);font-weight:500;">Beranda</a>
+        <i class="fa-solid fa-angle-right" style="font-size:.7rem;opacity:.6;"></i>
+        <span>{!! $post['kategori'] ? '<a href="' . ci_route("{$alt_slug}.kategori.{$post['kat_slug']}") . '" style="color:var(--c-primary);font-weight:500;">' . $post['kategori'] . '</a>' : 'Artikel' !!}</span>
+    </div>
 </nav>
 
-<article>
-    <h1 class="text-h2">
+<article style="margin-bottom:1.5rem;">
+    <h1 style="font-size:1.65rem;font-weight:700;color:var(--c-text-head);line-height:1.35;margin-bottom:.65rem;">
         {{ $post['judul'] }}
     </h1>
 
-    <span class="inline-flex flex-wrap gap-x-3 gap-y-2 text-xs lg:text-sm py-2 text-accent-200">
-        <span>{{ $post['owner'] }} <i class="fas fa-check text-xs bg-green-500 h-4 w-4 inline-flex items-center justify-center rounded-full text-white"></i></span>
-        <span class="before:content-['-'] before:pr-3 before:inline-block">{{ tgl_indo($post['tgl_upload']) }}</span>
-        <span class="before:content-['-'] before:pr-3 before:inline-block">Dibaca {{ hit($post['hit']) }}</span>
-    </span>
+    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:.75rem;font-size:.8rem;color:var(--c-text-muted);background:#f8fafc;padding:.5rem .85rem;border-radius:var(--r-sm);border:1px solid var(--c-border);">
+        <span style="font-weight:600;color:var(--c-text-head);display:flex;align-items:center;gap:.35rem;">
+            <i class="fa-solid fa-circle-check" style="color:var(--c-primary);"></i> {{ $post['owner'] }}
+        </span>
+        <span>&bull;</span>
+        <span><i class="fa-regular fa-calendar" style="margin-right:.3rem;"></i>{{ tgl_indo($post['tgl_upload']) }}</span>
+        <span>&bull;</span>
+        <span><i class="fa-regular fa-eye" style="margin-right:.3rem;"></i>Dibaca {{ hit($post['hit']) }}x</span>
+    </div>
 </article>
 
 <div class="content space-y-2 py-4">

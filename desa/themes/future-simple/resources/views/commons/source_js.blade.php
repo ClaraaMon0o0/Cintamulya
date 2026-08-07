@@ -4,6 +4,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
     <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 @endif
 
 @include('core::admin.layouts.components.token')
@@ -22,12 +23,16 @@ if (typeof $ !== 'undefined' && $.fn.dataTable) {
 }
 
 // ---- Loading Screen ----
-window.addEventListener('load', function() {
+function hideFsLoader() {
     var loader = document.getElementById('fs-loader');
-    if (loader) {
+    if (loader && loader.style.display !== 'none') {
         loader.style.opacity = '0';
-        setTimeout(function() { loader.style.display = 'none'; }, 420);
+        setTimeout(function() { loader.style.display = 'none'; }, 350);
     }
+}
+window.addEventListener('load', hideFsLoader);
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(hideFsLoader, 600);
 });
 
 // ---- Back to Top ----
@@ -196,6 +201,22 @@ window.addEventListener('load', function() {
         });
     });
 })();
+
+// ---- Init Owl Carousel ----
+$(document).ready(function() {
+    if ($.fn.owlCarousel) {
+        $('.owl-carousel').owlCarousel({
+            items: 1,
+            loop: true,
+            margin: 10,
+            autoplay: true,
+            autoplayTimeout: 3500,
+            autoplayHoverPause: true,
+            nav: false,
+            dots: true
+        });
+    }
+});
 </script>
 
 @if (!setting('inspect_element'))
