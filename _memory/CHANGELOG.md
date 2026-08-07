@@ -149,3 +149,26 @@ Konteks: Catatan historis perubahan struktur repositori dan memory system. Bagia
 - **Daftar Submenu Aktif Tampil Sempurna**:
   - **Statistik Keluarga**: Menampilkan submenu *Kelas Sosial*.
   - **Statistik Bantuan**: Menampilkan submenu *Penerima Bantuan Penduduk*, *Penerima Bantuan Keluarga*, *BPNT*, *BLT DANA DESA*, *PKH*, *BEDAH RUMAH*, *JAMKESMAS*, *BST KEMENSOS*, *BLT APBD*, dll.
+---
+
+## [2026-08-07] — Perbaikan Halaman Aparatur Desa & Push Master
+
+### Perbaikan yang Diterapkan
+- **Halaman Aparatur Desa (partials/pemerintah/index.blade.php)**:
+  - Mengubah query urutan pengurutan data pamong dari pamong_urutan menjadi urut sesuai skema tabel 	web_desa_pamong.
+  - Menambahkan penanganan fallback untuk nama pamong yang kosong agar tetap menampilkan Pejabat Aparatur Desa.
+  - Memastikan foto avatar (AmbilFoto), badge Kepala Desa/Perangkat Desa, NIP/NIAP, dan status aktif melayani tampil secara dinamis dari database.
+- **Git Push Master**:
+  - Berhasil melakukan git commit dan git push origin master sesuai instruksi pengguna. Tema uture-simple di folder desa/themes/future-simple siap dipindai dan diaktifkan langsung via panel admin OpenSID.
+---
+
+## [2026-08-08] — Perbaikan Halaman Aparatur Desa (/pemerintah) & Status IDM (/status-idm)
+
+### Perbaikan yang Diterapkan
+- **Halaman Aparatur Desa (/pemerintah)**:
+  - Mengintegrasikan kueri langsung tabel 	web_desa_pamong dengan sorting urutan urut dari database.
+  - Menampilkan kartu aparatur desa dengan foto avatar (AmbilFoto), nama lengkap, badge jabatan (Kepala Desa, Kaur, Kasi), NIP/NIAP, dan status aktif melayani.
+- **Halaman Status IDM (/status-idm)**:
+  - Mengaktifkan rute menu status-idm di tabel menu database dan menetapkan default tahun IDM ke 2024 (data resmi Kemendesa).
+  - Memperbarui URL API internal ke internal_api/idm/.
+  - Mendesain ulang tampilan dengan gradien Forest Green, 4 Kartu Ringkasan (Skor IDM  .8024, Status MAJU, Target MANDIRI, Skor Minimal  .8156), Identitas Wilayah Desa, dan Tabel Rincian Indikator IDM lengkap.

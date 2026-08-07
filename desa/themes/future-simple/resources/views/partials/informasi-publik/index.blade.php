@@ -1,183 +1,128 @@
-@extends('theme::layouts.right-sidebar')
+@extends('theme::layouts.full-content')
 @include('theme::commons.asset_sweetalert')
 
 @section('content')
-    <div class="content py-1">
-        <div class="box box-danger" style="padding-bottom: 2rem;">
-            <div class="box-header with-border" style="margin-bottom: 20px;">
-                <h3 class="box-title">Informasi Publik</h3>
-            </div>
-            <div class="box-body">
-                <div class="table-responsive">
-                    <table class="table table-striped table-bordered" id="tabelData">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Judul Informasi</th>
-                                <th>Tahun</th>
-                                <th>Kategori</th>
-                                <th>Tanggal Upload</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tfoot></tfoot>
-                    </table>
-                </div>
-            </div>
+<div class="fs-infopublik-wrap">
+    {{-- Breadcrumb --}}
+    <nav aria-label="Breadcrumb" style="margin-bottom:1.25rem;">
+        <div class="fs-breadcrumb" style="color:var(--c-text-muted);font-size:.82rem;display:flex;align-items:center;gap:.4rem;">
+            <a href="{{ site_url() }}" style="color:var(--c-primary);font-weight:500;">Beranda</a>
+            <i class="fa-solid fa-angle-right" style="font-size:.7rem;opacity:.6;"></i>
+            <span>Informasi Publik</span>
+        </div>
+    </nav>
+
+    {{-- Hero Header --}}
+    <div style="background:linear-gradient(135deg,#164e63 0%,#0e7490 55%,#06b6d4 100%);color:#fff;padding:2.25rem 2.5rem;border-radius:var(--r-lg);margin-bottom:2rem;box-shadow:var(--sh-md);position:relative;overflow:hidden;">
+        <div style="position:absolute;right:-10px;bottom:-20px;font-size:10rem;color:rgba(255,255,255,0.05);pointer-events:none;"><i class="fa-solid fa-landmark"></i></div>
+        <div style="position:relative;z-index:2;max-width:700px;">
+            <span style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);font-size:.75rem;font-weight:600;padding:.25rem .75rem;border-radius:999px;display:inline-flex;align-items:center;gap:.4rem;margin-bottom:.75rem;backdrop-filter:blur(4px);">
+                <i class="fa-solid fa-shield-halved" style="color:#a5f3fc;"></i> Daftar Informasi Publik (DIP)
+            </span>
+            <h1 style="font-size:2rem;font-weight:800;margin-bottom:.5rem;line-height:1.2;text-shadow:0 2px 4px rgba(0,0,0,0.15);">
+                Informasi Publik Desa {{ e($desa['nama_desa']) }}
+            </h1>
+            <p style="font-size:.95rem;color:#cffafe;line-height:1.65;margin:0;">
+                Dokumen informasi berkala dan serta merta yang wajib tersedia sesuai UU Keterbukaan Informasi Publik (KIP) No. 14/2008.
+            </p>
         </div>
     </div>
-@endsection
+
+    {{-- Table Card --}}
+    <div style="background:white;border-radius:var(--r-lg);border:1px solid var(--c-border);padding:1.5rem;box-shadow:var(--sh-sm);">
+        <h3 style="font-size:1rem;font-weight:700;color:var(--c-text-head);margin-bottom:1.25rem;display:flex;align-items:center;gap:.5rem;">
+            <i class="fa-solid fa-folder-open" style="color:var(--c-primary);"></i> Daftar Dokumen Informasi Publik
+        </h3>
+        <div style="overflow-x:auto;">
+            <table class="fs-table" id="tabelData" style="width:100%;border-collapse:collapse;font-size:.83rem;">
+                <thead>
+                    <tr style="background:linear-gradient(135deg,#164e63,#0e7490);color:white;">
+                        <th style="padding:.75rem .85rem;text-align:center;width:50px;">No</th>
+                        <th style="padding:.75rem .85rem;text-align:left;">Judul Informasi</th>
+                        <th style="padding:.75rem .85rem;text-align:center;width:75px;">Tahun</th>
+                        <th style="padding:.75rem .85rem;text-align:left;">Kategori</th>
+                        <th style="padding:.75rem .85rem;text-align:center;width:110px;">Tanggal Upload</th>
+                        <th style="padding:.75rem .85rem;text-align:center;width:80px;">Aksi</th>
+                    </tr>
+                </thead>
+                <tfoot></tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+.fs-table th, .fs-table td { padding:.65rem .85rem; border-bottom:1px solid var(--c-border); }
+.fs-table tbody tr:hover { background:#f0fdff; }
+</style>
 
 @push('scripts')
-    <script>
-        $(document).ready(function() {
-            var route = `{{ route('api.informasi-publik') }}`;
+<script>
+$(document).ready(function() {
+    var tabelData = $('#tabelData').DataTable({
+        processing: true,
+        serverSide: true,
+        autoWidth: false,
+        ordering: true,
+        language: { search: 'Cari:', lengthMenu: 'Tampil _MENU_ data', zeroRecords: 'Tidak ada dokumen informasi publik.', info: 'Halaman _PAGE_ dari _PAGES_', infoEmpty: '', paginate: { first: '&laquo;', previous: '&lsaquo;', next: '&rsaquo;', last: '&raquo;' } },
+        ajax: {
+            url: '{{ route('api.informasi-publik') }}',
+            method: 'GET',
+            data: row => ({
+                'page[size]': row.length,
+                'page[number]': (row.start / row.length) + 1,
+                'filter[search]': row.search.value,
+                'sort': (row.order[0]?.dir === 'asc' ? '' : '-') + (row.columns[row.order[0]?.column]?.name || 'tgl_upload')
+            }),
+            dataSrc: function(json) {
+                json.recordsTotal = json.meta.pagination.total;
+                json.recordsFiltered = json.meta.pagination.total;
+                return json.data;
+            }
+        },
+        columns: [
+            { data: null, searchable: false, orderable: false, className: 'text-center', render: (d, t, r, m) => m.row + m.settings._iDisplayStart + 1 },
+            { data: 'nama', name: 'nama', render: (d, t, r) => `<span style="font-weight:600;color:var(--c-text-head);">${r.attributes.nama}</span>` },
+            { data: 'tahun', name: 'tahun', className: 'text-center', render: (d, t, r) => `<strong>${r.attributes.tahun || '-'}</strong>` },
+            { data: 'kategori', name: 'kategori', render: (d, t, r) => `<span style="background:#cffafe;color:#164e63;font-size:.75rem;padding:.15rem .5rem;border-radius:999px;font-weight:600;">${r.attributes.kategori || '-'}</span>` },
+            { data: 'tgl_upload', name: 'tgl_upload', className: 'text-center', render: (d, t, r) => r.attributes.tgl_upload || '-' },
+            {
+                data: null, searchable: false, orderable: false, className: 'text-center',
+                render: (d, t, r) => (r.attributes.satuan || r.attributes.url)
+                    ? `<button class="lihat-dokumen" data-nama="${r.attributes.nama}" data-url="${r.attributes.url||''}" data-file="${r.attributes.satuan||''}" style="padding:.3rem .7rem;background:var(--c-primary);color:white;border:none;border-radius:var(--r-sm);font-size:.75rem;cursor:pointer;font-weight:600;"><i class="fa-solid fa-file" style="margin-right:.3rem;"></i>Lihat</button>`
+                    : `<span style="color:var(--c-text-muted);font-size:.75rem;">-</span>`
+            }
+        ],
+        order: [[4, 'desc']]
+    });
 
-            var tabelData = $('#tabelData').DataTable({
-                processing: true,
-                serverSide: true,
-                autoWidth: false,
-                ordering: true,
-                ajax: {
-                    url: route,
-                    method: 'GET',
-                    data: row => ({
-                        "page[size]": row.length,
-                        "page[number]": (row.start / row.length) + 1,
-                        "filter[search]": row.search.value,
-                        "sort": `${row.order[0]?.dir === "asc" ? "" : "-"}${row.columns[row.order[0]?.column]?.name}`
-                    }),
-                    dataSrc: json => {
-                        json.recordsTotal = json.meta.pagination.total;
-                        json.recordsFiltered = json.meta.pagination.total;
-                        return json.data;
-                    },
-                    error: function(xhr) {
-                        console.error('AJAX Error:', xhr.responseText);
-                        Swal.fire('Error', 'Terjadi kesalahan saat memuat data.', 'error');
+    $(document).on('click', '.lihat-dokumen', function() {
+        var nama = $(this).data('nama');
+        var file = $(this).data('file') || $(this).data('url');
+        if (!file) { Swal.fire('Tidak Ada File', 'Dokumen belum tersedia.', 'warning'); return; }
+        var slug = nama.toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
+        Swal.fire({
+            title: `<h4 style="font-size:1rem;">${nama}</h4>`,
+            html: `<div style="display:flex;flex-direction:column;align-items:center;gap:1rem;">
+                <iframe src="${file}" style="width:100%;min-height:420px;border:1px solid #e2e8f0;border-radius:8px;"></iframe>
+                <button class="unduh-dokumen" data-nama="${slug}" data-file="${file}" style="padding:.5rem 1.25rem;background:var(--c-primary);color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;">
+                    <i class="fa-solid fa-download" style="margin-right:.4rem;"></i>Unduh File
+                </button></div>`,
+            width: '65%', showCloseButton: true, showConfirmButton: false,
+            didOpen: () => {
+                $('.unduh-dokumen').on('click', function() {
+                    var f = $(this).data('file'); var n = $(this).data('nama');
+                    if (f.includes('drive.google.com')) {
+                        var id = f.includes('/d/') ? f.split('/d/')[1].split('/')[0] : new URLSearchParams(new URL(f).search).get('id');
+                        if (id) f = 'https://drive.google.com/uc?export=download&id='+id;
                     }
-                },
-                columnDefs: [{
-                    targets: '_all',
-                    className: 'text-nowrap'
-                }, ],
-                columns: [{
-                        data: null,
-                        searchable: false,
-                        orderable: false
-                    },
-                    {
-                        data: 'nama',
-                        name: 'nama',
-                        render: (data, type, row) => row.attributes.nama
-                    },
-                    {
-                        data: 'tahun',
-                        name: 'tahun',
-                        render: (data, type, row) => row.attributes.tahun
-                    },
-                    {
-                        data: 'kategori',
-                        name: 'kategori',
-                        render: (data, type, row) => row.attributes.kategori
-                    },
-                    {
-                        data: 'tgl_upload',
-                        name: 'tgl_upload',
-                        render: (data, type, row) => row.attributes.tgl_upload
-                    },
-                    {
-                        data: null,
-                        searchable: false,
-                        orderable: false,
-                        render: (data, type, row) => {
-                            if (row.attributes.satuan || row.attributes.url) {
-                                return `<button class="btn btn-xs btn-primary lihat-dokumen"
-                                        data-nama="${row.attributes.nama}"
-                                        data-url="${row.attributes.url}"
-                                        data-file="${row.attributes.satuan}">
-                                        Lihat
-                                    </button>`;
-                            }
-                            return '';
-                        }
-                    }
-                ],
-                order: [
-                    [4, 'desc']
-                ],
-                drawCallback: function(settings) {
-                    var api = this.api();
-                    api.column(0, {
-                        search: 'applied',
-                        order: 'applied'
-                    }).nodes().each(function(cell, i) {
-                        cell.innerHTML = api.page.info().start + i + 1;
-                    });
-                }
-            });
-
-            // Event listener untuk tombol lihat dokumen
-            $(document).on('click', '.lihat-dokumen', function() {
-                var nama = $(this).data('nama');
-                var file = $(this).data('file') || $(this).data('url');
-
-                nama = nama.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
-
-                if (!file) {
-                    Swal.fire('Error', 'File tidak ditemukan.', 'error');
-
-                    return;
-                }
-
-                Swal.fire({
-                    title: '<h4 style="margin-bottom: 10px;">Lihat</h4>',
-                    html: `
-                        <div style="display: flex; flex-direction: column; align-items: center; width: 100%; gap: 15px;">
-                            <iframe src="${file}" style="width: 100%; min-height: 400px; border: 1px solid #ddd; border-radius: 5px; display: flex; align-items: center; justify-content: center;"></iframe>
-                            <button class="btn btn-primary btn-sm unduh-dokumen" data-nama="${nama}" data-file="${file}"
-                                style="padding: 8px 20px; font-size: 14px; border-radius: 5px; cursor: pointer;">
-                                Unduh File
-                            </button>
-                        </div>
-                    `,
-                    width: '60%',
-                    heightAuto: true,
-                    showCloseButton: true,
-                    showConfirmButton: false,
-                    showCancelButton: false,
-                    didOpen: () => {
-                        $(".unduh-dokumen").on("click", function(e) {
-                            e.preventDefault();
-                            let pdfUrl = $(this).data("file");
-                            let fileName = $(this).data("nama") || "document.pdf";
-
-                            if (pdfUrl.includes("drive.google.com")) {
-                                let fileId = '';
-                                if (pdfUrl.includes('/d/')) {
-                                    fileId = pdfUrl.split('/d/')[1].split('/')[0];
-                                } else if (pdfUrl.includes('id=')) {
-                                    const urlParams = new URLSearchParams(new URL(pdfUrl).search);
-                                    fileId = urlParams.get('id');
-                                }
-
-                                if (fileId) {
-                                    pdfUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
-                                }
-                            }
-
-                            let link = $("<a>")
-                                .attr("href", pdfUrl)
-                                .attr("download", fileName)
-                                .css("display", "none")
-                                .appendTo("body");
-
-                            link[0].click();
-                            link.remove();
-                        });
-                    }
+                    $('<a>').attr({href:f,download:n}).appendTo('body')[0].click();
+                    $('a[download]').remove();
                 });
-            });
+            }
         });
-    </script>
+    });
+});
+</script>
 @endpush
+@endsection
