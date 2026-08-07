@@ -46,10 +46,10 @@
             padding: 8px;
         }
     </style>
-    <div class="box box-primary box-solid">
-        <div class="box-header">
-            <h3 class="box-title">
-                <i class="fa fa-chart-bar mr-1"></i>{{ $judul_widget }}
+    <div class="box" style="background:var(--c-white);border-radius:var(--r-md);border:1px solid var(--c-border);padding:1.25rem;margin-bottom:1.5rem;box-shadow:var(--sh-sm);">
+        <div class="box-header" style="margin-bottom:1rem;border-bottom:2px solid var(--c-primary-light);padding-bottom:.5rem;">
+            <h3 class="box-title" style="font-size:1rem;font-weight:700;color:var(--c-text-head);display:flex;align-items:center;gap:.4rem;">
+                <i class="fa-solid fa-chart-pie" style="color:var(--c-primary);"></i> {{ $judul_widget }}
             </h3>
         </div>
         <div class="box-body">
