@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
 /* Modifikasi Check list dengan Tombol Botton */
 .btn-info.active,
 .btn-info.active:focus,
@@ -48,8 +50,8 @@
     border-radius: 0;
 }
 
-.input-group> label.error{
-    position:fixed;
+.input-group>label.error {
+    position: fixed;
     margin-top: 25px;
     margin-left: -366px;
 }
@@ -59,7 +61,7 @@
     line-height: 1;
 }
 
-.btn-group > .btn:first-child:not(:last-child):not(.dropdown-toggle) {
+.btn-group>.btn:first-child:not(:last-child):not(.dropdown-toggle) {
     border-radius: 3px;
 }
 
@@ -88,7 +90,7 @@
     margin: 0px 5px 5px 0px;
 }
 
-.btn-mb-5{
+.btn-mb-5 {
     margin-bottom: 5px;
 }
 
@@ -155,13 +157,16 @@
         -o-transform: translate(-270px, 0);
         transform: translate(-270px, 0);
     }
+
     .main-header .logo,
     .main-header .navbar {
         width: 100%;
     }
+
     .main-header .navbar {
         margin: 0;
     }
+
     .content-wrapper,
     .main-footer {
         margin-left: 0;
@@ -194,29 +199,35 @@
     text-transform: uppercase;
     background-color: #d2d6de !important;
 }
+
 .table-bordered>thead.disabled,
 .table-bordered>thead.disabled {
     opacity: 1;
 }
 
 @media (max-width:480px) {
+
     .selecta,
     .inputa {
         width: 150px
     }
+
     .form-group {
         margin-bottom: 10px;
     }
+
     .leaflet-control-layers-expanded {
         display: none;
     }
 }
 
 @media (max-width:767px) {
+
     .selecta,
     .inputa {
         width: 150px
     }
+
     .form-group {
         margin-bottom: 10px;
     }
@@ -266,7 +277,8 @@ table.dataTable thead th.sorting,
 table.dataTable thead th.sorting_asc,
 table.dataTable thead th.sorting_desc {
     position: relative;
-    padding-right: 35px !important; /* Tambahkan lebih banyak ruang untuk ikon sorting */
+    padding-right: 35px !important;
+    /* Tambahkan lebih banyak ruang untuk ikon sorting */
 }
 
 /* Sesuaikan posisi ikon sorting tanpa mengubah ukurannya */
@@ -274,10 +286,12 @@ table.dataTable thead th.sorting::after,
 table.dataTable thead th.sorting_asc::after,
 table.dataTable thead th.sorting_desc::after {
     position: absolute;
-    right: 12px; /* Geser ikon lebih ke kanan */
+    right: 12px;
+    /* Geser ikon lebih ke kanan */
     top: 50%;
     transform: translateY(-50%);
-    opacity: 0.5; /* Kurangi transparansi agar lebih halus */
+    opacity: 0.5;
+    /* Kurangi transparansi agar lebih halus */
 }
 
 .table-bordered>thead>tr>th,
@@ -743,17 +757,17 @@ div.form-surat .content-header {
 }
 
 #dok_warga label {
-    display: flex; 
-    align-items: center; 
+    display: flex;
+    align-items: center;
     gap: 5px;
 }
 
-.mailbox-read-info{
+.mailbox-read-info {
     border-bottom: 1px solid #e6e6e6;
     border-top: 1px solid #e6e6e6;
 }
 
-.mailbox-read-message{
+.mailbox-read-message {
     border-bottom: 1px solid #e6e6e6;
 }
 
@@ -779,31 +793,33 @@ div.form-surat .content-header {
     }
 }
 
-.swal-lg{
+.swal-lg {
     width: 1000px !important;
 }
-.swal-input-250{
+
+.swal-input-250 {
     width: 250px !important;
-     margin-top: 1em !important;
+    margin-top: 1em !important;
     margin-right: auto !important;
     margin-bottom: 3px !important;
     margin-left: auto !important;
 }
+
 .swal-left {
     text-align: left !important;
 }
 
 .swal-bold {
-    font-weight: bold !important; 
+    font-weight: bold !important;
 }
 
 @media (max-width: 1000px) {
-    .swal-lg{
+    .swal-lg {
         width: 100%;
     }
 }
 
-.info-box.active{
+.info-box.active {
     border: 2px solid #0045ffb8;
 }
 
@@ -823,8 +839,8 @@ div.form-surat .content-header {
     border-radius: 3px;
 }
 
-.widget-surat{
-    min-height:107px;
+.widget-surat {
+    min-height: 107px;
 }
 
 .image-container {
@@ -848,12 +864,12 @@ div.form-surat .content-header {
     opacity: 0.2;
 }
 
-.btn-group-vertical > .btn:first-child:not(:last-child) {
+.btn-group-vertical>.btn:first-child:not(:last-child) {
     border-radius: 3px;
 }
 
 @media (min-width: 992px) {
-    .row.mepet > div {
+    .row.mepet>div {
         margin-right: -25px;
     }
 }
@@ -867,7 +883,8 @@ hr.batas {
     border-radius: 5px;
 }
 
-.input-group-sm > .input-group-btn > .btn, .input-group-btn:last-child > .btn:not(:last-child):not(.dropdown-toggle) {
+.input-group-sm>.input-group-btn>.btn,
+.input-group-btn:last-child>.btn:not(:last-child):not(.dropdown-toggle) {
     border-radius: 3px;
 }
 
@@ -877,12 +894,19 @@ hr.batas {
 }
 
 .bootstrap-datetimepicker-widget table td {
-    text-align: center; /* Pusatkan elemen */
-    vertical-align: middle; /* Sejajarkan vertikal */
-    width: 40px; /* Sesuaikan lebar kolom */
-    padding: 10px; /* Kurangi padding agar lebih kompak */
+    text-align: center;
+    /* Pusatkan elemen */
+    vertical-align: middle;
+    /* Sejajarkan vertikal */
+    width: 40px;
+    /* Sesuaikan lebar kolom */
+    padding: 10px;
+    /* Kurangi padding agar lebih kompak */
 }
-table.dataTable thead th.sorting[rowspan="2"]::after, table.dataTable thead th.sorting_asc[rowspan="2"]::after, table.dataTable thead th.sorting_desc[rowspan="2"]::after{
+
+table.dataTable thead th.sorting[rowspan="2"]::after,
+table.dataTable thead th.sorting_asc[rowspan="2"]::after,
+table.dataTable thead th.sorting_desc[rowspan="2"]::after {
     top: 58%;
 }
 
@@ -908,4 +932,398 @@ table.dataTable thead th.sorting[rowspan="2"]::after, table.dataTable thead th.s
     top: 13px;
     right: -35px;
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* ==========================================================================
+   DESA CINTAMULYA ADMIN THEME — FUTURE-SIMPLE HARMONIZATION
+   Modern Green Premium UI System
+   ========================================================================== */
+
+:root {
+
+    /* Primary Colors */
+    --admin-primary: #4D774E;
+    --admin-primary-dark: #164A41;
+    --admin-primary-light: #9DC88D;
+
+    /* Accent */
+    --admin-secondary: #F1B24A;
+    --admin-secondary-dark: #D9982B;
+
+    /* Sidebar */
+    --admin-bg-sidebar: #164A41;
+    --admin-bg-sidebar-active: #0F332D;
+
+    /* Text */
+    --admin-text-sidebar: #ffffff;
+    --admin-text-heading: #164A41;
+
+    /* Background */
+    --admin-bg: #F8FAF5;
+    --admin-card-bg: #FFFFFF;
+
+    /* Border */
+    --admin-border-color: #E8EFE8;
+
+    /* Shadow */
+    --admin-shadow:
+        0 8px 25px rgba(0, 0, 0, .06);
+
+    --admin-shadow-hover:
+        0 12px 30px rgba(0, 0, 0, .12);
+
+    --admin-radius: 18px;
+}
+
+/* ========================================
+   GLOBAL
+======================================== */
+
+body,
+.content-wrapper,
+.main-header,
+.main-sidebar,
+.sidebar,
+.box,
+.btn,
+.table,
+.form-control {
+    font-family: 'Poppins', sans-serif !important;
+}
+
+.content-wrapper,
+.right-side {
+    background: var(--admin-bg) !important;
+}
+
+/* ========================================
+   HEADER
+======================================== */
+
+.main-header .navbar {
+    background: #ffffff !important;
+    border-bottom: 1px solid var(--admin-border-color);
+}
+
+.main-header .logo {
+    background: var(--admin-primary-dark) !important;
+    color: #ffffff !important;
+    font-weight: 700;
+}
+
+.main-header .logo:hover {
+    background: #0F332D !important;
+}
+
+.main-header .navbar .sidebar-toggle:hover {
+    background: #f5f5f5 !important;
+}
+
+.main-header .navbar .nav>li>a {
+    color: var(--admin-primary-dark) !important;
+}
+
+.main-header .navbar .nav>li>a:hover,
+.main-header .navbar .nav>li>a:focus {
+    background: #f3f8f3 !important;
+    color: var(--admin-primary-dark) !important;
+}
+
+/* ========================================
+   SIDEBAR
+======================================== */
+
+.main-sidebar,
+.left-side {
+    background:
+        linear-gradient(180deg,
+            #164A41 0%,
+            #0F332D 100%) !important;
+}
+
+.sidebar-menu>li.header {
+    background: rgba(255, 255, 255, .08) !important;
+    color: rgba(255, 255, 255, .75) !important;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 11px;
+}
+
+.sidebar-menu>li>a {
+    color: rgba(255, 255, 255, .85) !important;
+    transition: .3s;
+}
+
+.sidebar-menu>li:hover>a,
+.sidebar-menu>li.active>a,
+.sidebar-menu>li.menu-open>a {
+    background: rgba(255, 255, 255, .12) !important;
+    color: #ffffff !important;
+}
+
+.sidebar-menu>li.active>a {
+    border-left: 4px solid var(--admin-secondary) !important;
+}
+
+.sidebar-menu .treeview-menu {
+    background: rgba(0, 0, 0, .15) !important;
+}
+
+.sidebar-menu .treeview-menu>li>a {
+    color: rgba(255, 255, 255, .75) !important;
+}
+
+.sidebar-menu .treeview-menu>li:hover>a,
+.sidebar-menu .treeview-menu>li.active>a {
+    color: #ffffff !important;
+}
+
+.user-panel>.info,
+.user-panel>.info>a {
+    color: #ffffff !important;
+}
+
+/* ========================================
+   CONTENT TITLE
+======================================== */
+
+.content-header>h1 {
+    color: var(--admin-text-heading);
+    font-weight: 700;
+}
+
+.content-header>h1 small {
+    color: #6b7280;
+}
+
+/* ========================================
+   CARD / BOX
+======================================== */
+
+.box {
+    border: none !important;
+    border-radius: var(--admin-radius) !important;
+    background: #ffffff !important;
+    box-shadow: var(--admin-shadow);
+    overflow: hidden;
+}
+
+.box:hover {
+    box-shadow: var(--admin-shadow-hover);
+}
+
+.box-header {
+    padding: 18px 22px !important;
+    border-bottom: 1px solid var(--admin-border-color) !important;
+}
+
+.box-header .box-title {
+    font-weight: 600;
+    color: var(--admin-primary-dark);
+}
+
+.box-body {
+    padding: 22px !important;
+}
+
+.box.box-primary {
+    border-top: 4px solid var(--admin-primary) !important;
+}
+
+.box.box-solid.box-primary>.box-header {
+    background: var(--admin-primary) !important;
+    color: white !important;
+}
+
+/* ========================================
+   BUTTON
+======================================== */
+
+.btn {
+    border-radius: 999px !important;
+    font-weight: 500 !important;
+    transition: all .3s ease;
+}
+
+.btn-primary {
+    background: var(--admin-primary) !important;
+    border-color: var(--admin-primary) !important;
+    color: white !important;
+
+    box-shadow:
+        0 4px 15px rgba(77, 119, 78, .25);
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+    background: var(--admin-primary-dark) !important;
+    border-color: var(--admin-primary-dark) !important;
+}
+
+.btn-success {
+    border-radius: 999px !important;
+}
+
+.btn-warning {
+    background: var(--admin-secondary) !important;
+    border-color: var(--admin-secondary) !important;
+    color: white !important;
+}
+
+.btn-warning:hover,
+.btn-warning:focus,
+.btn-warning:active {
+    background: var(--admin-secondary-dark) !important;
+    border-color: var(--admin-secondary-dark) !important;
+}
+
+.btn-info {
+    border-radius: 999px !important;
+}
+
+/* ========================================
+   FORM
+======================================== */
+
+.form-control {
+    border-radius: 12px !important;
+    border: 1px solid #dbe4db !important;
+    box-shadow: none !important;
+}
+
+.form-control:focus {
+    border-color: var(--admin-primary) !important;
+
+    box-shadow:
+        0 0 0 4px rgba(77, 119, 78, .15) !important;
+}
+
+/* ========================================
+   TABLE
+======================================== */
+
+.table {
+    background: white;
+}
+
+.table thead {
+    background: #F4F8F4;
+}
+
+.table thead th {
+    color: var(--admin-primary-dark);
+    font-weight: 600;
+    border-bottom: none !important;
+}
+
+.table-bordered {
+    border: 1px solid var(--admin-border-color);
+}
+
+.table>tbody>tr:hover {
+    background: #F9FCF9;
+}
+
+/* ========================================
+   SMALL BOX DASHBOARD
+======================================== */
+
+.small-box {
+    border-radius: 20px !important;
+    overflow: hidden;
+    box-shadow: var(--admin-shadow);
+}
+
+.small-box .inner {
+    padding: 20px;
+}
+
+.small-box h3 {
+    font-weight: 700;
+}
+
+.small-box .icon {
+    color: rgba(255, 255, 255, .20) !important;
+}
+
+.small-box.bg-aqua,
+.small-box.bg-blue,
+.small-box.bg-green,
+.small-box.bg-emerald {
+    background: linear-gradient(135deg,
+            #4D774E,
+            #164A41) !important;
+    color: white !important;
+}
+
+.small-box.bg-yellow {
+    background: linear-gradient(135deg,
+            #F1B24A,
+            #D9982B) !important;
+    color: white !important;
+}
+
+/* ========================================
+   PAGINATION
+======================================== */
+
+.pagination>.active>a,
+.pagination>.active>span {
+    background: var(--admin-primary) !important;
+    border-color: var(--admin-primary) !important;
+    color: white !important;
+}
+
+/* ========================================
+   BADGES
+======================================== */
+
+.label-primary,
+.badge-primary {
+    background: var(--admin-primary) !important;
+}
+
+.label-success,
+.badge-success {
+    background: #22c55e !important;
+}
+
+.label-warning,
+.badge-warning {
+    background: var(--admin-secondary) !important;
+}
+
+/* ========================================
+   LINKS
+======================================== */
+
+a {
+    color: var(--admin-primary);
+}
+
+a:hover,
+a:focus {
+    color: var(--admin-primary-dark);
+}
+
+/* ========================================
+   SCROLLBAR
+======================================== */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #eef3ee;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #9DC88D;
+    border-radius: 50px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #4D774E;
 }

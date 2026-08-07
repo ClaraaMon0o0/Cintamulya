@@ -28,23 +28,28 @@ body.login {
   margin: 0;
   padding: 0;
 }
+
 ul,
 ol {
   list-style: none;
 }
+
 li.list-item-layan {
   border: 1px solid teal;
   border-radius: 10px;
   margin: 10px;
   transition: all 0.4s;
 }
+
 li.list-item-layan:hover {
   background: teal;
 }
+
 li.list-item-layan a {
   color: teal;
   display: block;
 }
+
 li.list-item-layan a:hover {
   color: #fff;
 }
@@ -85,7 +90,7 @@ li.list-item-layan a:hover {
   margin-left: 0;
 }
 
-.login .form-box > [class*="form-"] {
+.login .form-box>[class*="form-"] {
   background: inherit;
   border-radius: 0;
   padding: 10px 12px;
@@ -96,15 +101,15 @@ li.list-item-layan a:hover {
   background: transparent;
 }
 
-.login .form-box > .form-top {
+.login .form-box>.form-top {
   background: teal;
 }
 
-.login .form-top > .login-footer-top {
+.login .form-top>.login-footer-top {
   margin-top: 3px;
 }
 
-.login .form-top > .login-footer-top h1 {
+.login .form-top>.login-footer-top h1 {
   padding: 10px 0;
   font-family: "Montserrat", sans-serif;
   font-weight: bold;
@@ -116,13 +121,13 @@ li.list-item-layan a:hover {
   font-size: calc(18px + 6 * ((100vw - 320px) / 680));
 }
 
-.login .form-top > .login-footer-top h3 {
+.login .form-top>.login-footer-top h3 {
   color: #ccc;
   text-transform: unset;
   letter-spacing: 1px;
 }
 
-.login .form-box > .form-bottom {
+.login .form-box>.form-bottom {
   margin-top: 20px;
 }
 
@@ -140,6 +145,7 @@ li.list-item-layan a:hover {
   font-family: "Montserrat", sans-serif;
   font-weight: 400;
 }
+
 .hubungi {
   border: 2px solid #ccc;
   font-size: 10px;
@@ -154,6 +160,7 @@ li.list-item-layan a:hover {
   margin: 10px auto 0;
   display: block;
 }
+
 .hubungi:hover {
   background: #ccc;
   color: teal;
@@ -190,12 +197,12 @@ li.list-item-layan a:hover {
     justify-content: center;
   }
 
-  .login .form-box > [class*="form-"] {
+  .login .form-box>[class*="form-"] {
     max-height: 100vh;
-    overflow-y: auto; 
+    overflow-y: auto;
   }
 
-  .login .form-box > .form-top {
+  .login .form-box>.form-top {
     color: #fff;
     position: relative;
     width: 60%;
@@ -205,13 +212,13 @@ li.list-item-layan a:hover {
     max-width: 120px;
   }
 
-  .login .form-box > .form-bottom {
+  .login .form-box>.form-bottom {
     width: 50%;
     margin: auto;
     padding-bottom: 30px;
   }
 
-  .login .form-bottom > .form-login {
+  .login .form-bottom>.form-login {
     width: 30%;
     margin: 25px auto;
   }
