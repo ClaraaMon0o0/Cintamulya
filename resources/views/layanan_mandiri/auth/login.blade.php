@@ -3,52 +3,54 @@
 @section('content')
     @include('admin.layouts.components.notifikasi')
     
-    <form id="validasi" autocomplete="off" action="{{ $form_action }}" method="post" class="login-form">
-        <div class="form-group form-login">
-            <input type="text" autocomplete="off" class="form-control angka required {!! jecho($cek_anjungan['keyboard'] == 1, true, 'kbvnumber') !!}" name="nik" maxlength="16" placeholder="NIK">
+    <form id="validasi" autocomplete="off" action="{{ $form_action }}" method="post">
+        <div class="mandiri-input-group">
+            <i class="fa-solid fa-id-card input-icon"></i>
+            <input type="text" autocomplete="off" class="mandiri-input angka required {!! jecho($cek_anjungan['keyboard'] == 1, true, 'kbvnumber') !!}" name="nik" maxlength="16" placeholder="Masukkan NIK (16 digit)">
         </div>
-        {{-- Hidden input for UUID from local storage --}}
+
         <input type="hidden" name="anjungan_uuid" id="anjungan_uuid">
-        <div class="form-group form-login">
+
+        <div class="mandiri-input-group">
+            <i class="fa-solid fa-lock input-icon"></i>
             <input
                 type="password"
                 autocomplete="off"
-                class="form-control angka required {!! jecho($cek_anjungan['keyboard'] == 1, true, 'kbvnumber') !!}"
+                class="mandiri-input angka required {!! jecho($cek_anjungan['keyboard'] == 1, true, 'kbvnumber') !!}"
                 name="password"
-                placeholder="PIN"
+                placeholder="Masukkan PIN (6 digit)"
                 id="pin"
                 maxlength="6"
             >
         </div>
-        <div class="form-group">
-            <center><input type="checkbox" id="checkbox" style="display: initial;"> <label for="checkbox">Tampilkan PIN</label></center>
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-block bg-green"><b>MASUK</b></button>
-        </div>
-        <div class="form-group">
-            <a href="{{ site_url('layanan-mandiri/masuk-ektp') }}">
-                <button type="button" class="btn btn-block bg-green"><b>MASUK DENGAN E-KTP</b></button>
-            </a>
-        </div>
+
+        <label class="mandiri-checkbox">
+            <input type="checkbox" id="checkbox">
+            <span>Tampilkan PIN</span>
+        </label>
+
+        <button type="submit" class="mandiri-btn mandiri-btn-primary">
+            <i class="fa-solid fa-right-to-bracket"></i> MASUK
+        </button>
+
+        <a href="{{ site_url('layanan-mandiri/masuk-ektp') }}" class="mandiri-btn mandiri-btn-outline">
+            <i class="fa-solid fa-address-card"></i> MASUK DENGAN E-KTP
+        </a>
+
         @if (setting('tampilkan_pendaftaran'))
-            <div class="form-group">
-                <a href="{{ site_url('layanan-mandiri/daftar') }}">
-                    <button type="button" class="btn btn-block bg-green"><b>DAFTAR</b></button>
-                </a>
-            </div>
-        @endif
-        <div class="form-group">
-            <a href="{{ site_url('layanan-mandiri/lupa-pin') }}">
-                <button type="button" class="btn btn-block bg-green"><b>LUPA PIN</b></button>
+            <a href="{{ site_url('layanan-mandiri/daftar') }}" class="mandiri-btn mandiri-btn-subtle">
+                <i class="fa-solid fa-user-plus"></i> DAFTAR AKUN
             </a>
-        </div>
+        @endif
+
+        <a href="{{ site_url('layanan-mandiri/lupa-pin') }}" class="mandiri-btn mandiri-btn-subtle" style="margin-bottom:0;">
+            <i class="fa-solid fa-key"></i> LUPA PIN
+        </a>
+
         @if (in_array(\Modules\Anjungan\Models\Anjungan::ANJUNGAN, $cek_anjungan['tipe'] ?? []))
-            <div class="form-group">
-                <a href="<?= route('anjungan.index') ?>">
-                    <button type="button" class="btn btn-block bg-green"><b>ANJUNGAN</b></button>
-                </a>
-            </div>
+            <a href="<?= route('anjungan.index') ?>" class="mandiri-btn mandiri-btn-subtle" style="margin-top:.75rem;">
+                <i class="fa-solid fa-desktop"></i> ANJUNGAN MANDIRI
+            </a>
         @endif
     </form>
 @endsection
