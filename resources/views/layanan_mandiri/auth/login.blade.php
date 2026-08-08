@@ -2,76 +2,87 @@
 
 @section('content')
     @include('admin.layouts.components.notifikasi')
-    
+
     <form id="validasi" autocomplete="off" action="{{ $form_action }}" method="post">
-        <div class="mandiri-input-group">
-            <i class="fa-solid fa-id-card input-icon"></i>
-            <input type="text" autocomplete="off" class="mandiri-input angka required {!! jecho($cek_anjungan['keyboard'] == 1, true, 'kbvnumber') !!}" name="nik" maxlength="16" placeholder="Masukkan NIK (16 digit)">
+
+        <div class="field">
+            <label for="nik">NIK (Nomor Induk Kependudukan)</label>
+            <div class="field-inner">
+                <i class="fa-solid fa-id-card fi-icon"></i>
+                <input
+                    type="text"
+                    id="nik"
+                    name="nik"
+                    autocomplete="off"
+                    maxlength="16"
+                    placeholder="Masukkan 16 digit NIK"
+                    class="angka required {!! jecho($cek_anjungan['keyboard'] == 1, true, 'kbvnumber') !!}"
+                >
+            </div>
         </div>
 
         <input type="hidden" name="anjungan_uuid" id="anjungan_uuid">
 
-        <div class="mandiri-input-group">
-            <i class="fa-solid fa-lock input-icon"></i>
-            <input
-                type="password"
-                autocomplete="off"
-                class="mandiri-input angka required {!! jecho($cek_anjungan['keyboard'] == 1, true, 'kbvnumber') !!}"
-                name="password"
-                placeholder="Masukkan PIN (6 digit)"
-                id="pin"
-                maxlength="6"
-            >
+        <div class="field">
+            <label for="pin">PIN</label>
+            <div class="field-inner">
+                <i class="fa-solid fa-lock fi-icon"></i>
+                <input
+                    type="password"
+                    id="pin"
+                    name="password"
+                    autocomplete="off"
+                    maxlength="6"
+                    placeholder="Masukkan 6 digit PIN"
+                    class="angka required {!! jecho($cek_anjungan['keyboard'] == 1, true, 'kbvnumber') !!}"
+                >
+            </div>
         </div>
 
-        <label class="mandiri-checkbox">
+        <label class="show-pin-label">
             <input type="checkbox" id="checkbox">
             <span>Tampilkan PIN</span>
         </label>
 
-        <button type="submit" class="mandiri-btn mandiri-btn-primary">
-            <i class="fa-solid fa-right-to-bracket"></i> MASUK
+        <button type="submit" class="btn btn-primary">
+            <i class="fa-solid fa-right-to-bracket"></i> Masuk
         </button>
 
-        <a href="{{ site_url('layanan-mandiri/masuk-ektp') }}" class="mandiri-btn mandiri-btn-outline">
-            <i class="fa-solid fa-address-card"></i> MASUK DENGAN E-KTP
+        <div class="form-divider">atau</div>
+
+        <a href="{{ site_url('layanan-mandiri/masuk-ektp') }}" class="btn btn-outline">
+            <i class="fa-solid fa-address-card"></i> Masuk dengan E-KTP
         </a>
 
         @if (setting('tampilkan_pendaftaran'))
-            <a href="{{ site_url('layanan-mandiri/daftar') }}" class="mandiri-btn mandiri-btn-subtle">
-                <i class="fa-solid fa-user-plus"></i> DAFTAR AKUN
+            <a href="{{ site_url('layanan-mandiri/daftar') }}" class="btn btn-ghost">
+                <i class="fa-solid fa-user-plus"></i> Daftar Akun
             </a>
         @endif
 
-        <a href="{{ site_url('layanan-mandiri/lupa-pin') }}" class="mandiri-btn mandiri-btn-subtle" style="margin-bottom:0;">
-            <i class="fa-solid fa-key"></i> LUPA PIN
+        <a href="{{ site_url('layanan-mandiri/lupa-pin') }}" class="btn btn-ghost">
+            <i class="fa-solid fa-key"></i> Lupa PIN
         </a>
 
         @if (in_array(\Modules\Anjungan\Models\Anjungan::ANJUNGAN, $cek_anjungan['tipe'] ?? []))
-            <a href="<?= route('anjungan.index') ?>" class="mandiri-btn mandiri-btn-subtle" style="margin-top:.75rem;">
-                <i class="fa-solid fa-desktop"></i> ANJUNGAN MANDIRI
+            <a href="<?= route('anjungan.index') ?>" class="btn btn-ghost">
+                <i class="fa-solid fa-desktop"></i> Anjungan Mandiri
             </a>
         @endif
+
     </form>
 @endsection
 
 @push('script')
-    <script type="text/javascript">
-        $('document').ready(function() {
-            var pass = $("#pin");
-            $('#checkbox').click(function() {
-                if (pass.attr('type') === "password") {
-                    pass.attr('type', 'text');
-                } else {
-                    pass.attr('type', 'password')
-                }
+    <script>
+        $(function() {
+            var pin = $('#pin');
+            $('#checkbox').on('change', function() {
+                pin.attr('type', this.checked ? 'text' : 'password');
             });
-            
-            // Get UUID from local storage and set it to the hidden input
-            const anjungan_uuid = localStorage.getItem('anjungan_uuid');
-            if (anjungan_uuid) {
-                $('#anjungan_uuid').val(anjungan_uuid);
-            }
+
+            var uuid = localStorage.getItem('anjungan_uuid');
+            if (uuid) $('#anjungan_uuid').val(uuid);
         });
     </script>
 @endpush
