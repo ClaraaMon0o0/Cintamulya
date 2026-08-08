@@ -561,16 +561,27 @@
                 $second = $matches[0] ?? 0;
             @endphp
 
-            @if ($errors->any())
+            @if (session('error') || session('danger') || $errors->any() || $ci->session->flashdata('notif'))
                 <div class="alert-error" id="notif">
-                    @foreach ($errors->all() as $item)
-                        <p id="{{ str_contains($item, 'Terlalu banyak') ? 'countdown' : '' }}" style="margin:0;">{{ $item }}</p>
-                    @endforeach
+                    <i class="fa-solid fa-triangle-exclamation alert-icon"></i>
+                    <div>
+                        <div class="alert-heading">Gagal Masuk</div>
+                        @if (session('error'))
+                            <p style="margin:0;">{!! session('error') !!}</p>
+                        @endif
+                        @if (session('danger'))
+                            <p style="margin:0;">{!! session('danger') !!}</p>
+                        @endif
+                        @if ($notif = $ci->session->flashdata('notif'))
+                            <p style="margin:0;">{!! $notif !!}</p>
+                        @endif
+                        @if ($errors->any())
+                            @foreach ($errors->all() as $item)
+                                <p id="{{ str_contains($item, 'Terlalu banyak') ? 'countdown' : '' }}" style="margin:0;">{{ $item }}</p>
+                            @endforeach
+                        @endif
+                    </div>
                 </div>
-            @endif
-
-            @if ($notif = $ci->session->flashdata('notif'))
-                <div class="alert-error" id="notif"><p style="margin:0;">{{ $notif }}</p></div>
             @endif
 
             @yield('content')
