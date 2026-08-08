@@ -1,5 +1,7 @@
 @extends('theme::layouts.full-content')
 
+@include('theme::commons.asset_highcharts')
+
 @section('content')
 <div class="fs-idm-wrap">
     {{-- Breadcrumb --}}
@@ -237,11 +239,15 @@ $(document).ready(function() {
         $('#nama-desa').text(identitas.nama_desa || '-');
 
         // Render Highcharts Safely
-        if (typeof Highcharts !== 'undefined') {
+        function initIdmChart(iks, ike, ikl) {
+            if (typeof Highcharts === 'undefined') {
+                setTimeout(function() { initIdmChart(iks, ike, ikl); }, 100);
+                return;
+            }
             Highcharts.chart('container-idm-chart', {
                 chart: {
                     type: 'pie',
-                    style: { fontFamily: 'Poppins, sans-serif' }
+                    style: { fontFamily: 'Inter, Poppins, sans-serif' }
                 },
                 title: { text: null },
                 plotOptions: {
@@ -266,6 +272,8 @@ $(document).ready(function() {
                 credits: { enabled: false }
             });
         }
+
+        initIdmChart(iks, ike, ikl);
 
         // Populate Table
         var tbody = $('#tabel-daftar tbody');
