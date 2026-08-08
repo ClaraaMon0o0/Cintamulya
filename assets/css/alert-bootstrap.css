@@ -1,75 +1,134 @@
 .alert {
-  padding: 15px;
+  padding: 16px 20px;
   margin-bottom: 20px;
   border: 1px solid transparent;
-  border-radius: 4px;
+  border-radius: 12px;
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 13px;
+  line-height: 1.5;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s ease;
 }
+
 .alert h4 {
   margin-top: 0;
+  margin-bottom: 6px;
   color: inherit;
+  font-weight: 600;
+  font-size: 15px;
 }
+
 .alert .alert-link {
-  font-weight: bold;
+  font-weight: 600;
+  text-decoration: underline;
+  transition: opacity 0.2s ease;
 }
-.alert > p,
-.alert > ul {
+
+.alert .alert-link:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+.alert>p,
+.alert>ul {
   margin-bottom: 0;
 }
-.alert > p + p {
-  margin-top: 5px;
+
+.alert>p+p {
+  margin-top: 6px;
 }
+
+.alert hr {
+  margin-top: 12px;
+  margin-bottom: 12px;
+  opacity: 0.6;
+}
+
+/* Close Button Mod */
 .alert-dismissable,
 .alert-dismissible {
-  padding-right: 35px;
+  padding-right: 45px;
 }
+
 .alert-dismissable .close,
 .alert-dismissible .close {
   position: relative;
   top: -2px;
-  right: -21px;
+  right: -10px;
   color: inherit;
+  opacity: 0.6;
+  font-size: 20px;
+  font-weight: 500;
+  text-shadow: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
+
+.alert-dismissable .close:hover,
+.alert-dismissible .close:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* ========================================
+   ALERT VARIANTS
+======================================== */
+
+/* Success Alert (Base Green Theme) */
 .alert-success {
-  background-color: #dff0d8;
-  border-color: #d6e9c6;
-  color: #468847;
+  background-color: #dcfce7 !important;
+  border-color: #bbf7d0 !important;
+  color: #0a5b28 !important;
 }
+
 .alert-success hr {
-  border-top-color: #c9e2b3;
+  border-top-color: #86efac;
 }
+
 .alert-success .alert-link {
-  color: #356635;
+  color: #053b19;
 }
+
+/* Info Alert (Soft Forest Teal Accent) */
 .alert-info {
-  background-color: #d9edf7 !important;
-  border-color: #bce8f1;
-  color: #3a87ad !important;
+  background-color: #e0f2fe !important;
+  border-color: #bae6fd !important;
+  color: #0369a1 !important;
 }
+
 .alert-info hr {
-  border-top-color: #a6e1ec;
+  border-top-color: #7dd3fc;
 }
+
 .alert-info .alert-link {
-  color: #2d6987;
+  color: #075985;
 }
+
+/* Warning Alert (Soft Amber Accent) */
 .alert-warning {
-  background-color: #fcf8e3;
-  border-color: #fbeed5;
-  color: #c09853;
+  background-color: #fef3c7 !important;
+  border-color: #fde68a !important;
+  color: #92400e !important;
 }
+
 .alert-warning hr {
-  border-top-color: #f8e5be;
+  border-top-color: #fcd34d;
 }
+
 .alert-warning .alert-link {
-  color: #a47e3c;
+  color: #78350f;
 }
+
+/* Danger Alert (Soft Rose Accent) */
 .alert-danger {
-  background-color: #f2dede;
-  border-color: #eed3d7;
-  color: #b94a48;
+  background-color: #ffe4e6 !important;
+  border-color: #fecdd3 !important;
+  color: #9f1239 !important;
 }
+
 .alert-danger hr {
-  border-top-color: #e6c1c7;
+  border-top-color: #fda4af;
 }
+
 .alert-danger .alert-link {
-  color: #953b39;
+  color: #881337;
 }
