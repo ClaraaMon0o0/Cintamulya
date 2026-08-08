@@ -7,18 +7,18 @@
 .open>.dropdown-toggle.btn-info.focus,
 .open>.dropdown-toggle.btn-info:hover {
     color: #fff;
-    background-color: #1788aa;
-    border-color: #1b6d85;
+    background-color: #16803c;
+    border-color: #0a5b28;
 }
 
 
 /* Modifikasi warna dan background Navigator Active */
 .nav-stacked>li.active>a,
 .nav-stacked>li.active>a:hover {
-    background-color: #337ab7;
+    background-color: #16803c;
     color: #fff;
     border-top: 0;
-    border-left-color: #1f2427;
+    border-left-color: #0a5b28;
 }
 
 
@@ -197,7 +197,8 @@
 .table-bordered>thead>tr>td {
     padding: 7px;
     text-transform: uppercase;
-    background-color: #d2d6de !important;
+    background-color: #dcfce7 !important;
+    color: #0a5b28;
 }
 
 .table-bordered>thead.disabled,
@@ -330,10 +331,10 @@ table.dataTable thead th.sorting_desc::after {
 /* mengatur Judul Sub Title*/
 .subtitle_head {
     padding: 10px 50px 10px 5px;
-    background-color: #a2f2ef;
+    background-color: #dcfce7;
     margin: 15px 0px 10px 0px;
     text-align: left;
-    color: #111
+    color: #0a5b28;
 }
 
 .subtitle_head label {
@@ -516,12 +517,12 @@ Warna Bar Anggaran
 .highcharts-point.highcharts-color-0,
 .highcharts-legend-item.highcharts-color-0 .highcharts-point,
 .highcharts-tooltip .highcharts-color-0 {
-    fill: #34b4eb;
+    fill: #16803c;
 }
 
 .highcharts-tooltip.highcharts-color-0,
 .highcharts-data-label-connector.highcharts-color-0 {
-    stroke: #2b2b29;
+    stroke: #0a5b28;
     /*warna tooltip pada bar lebih gelap agar terlihat*/
 }
 
@@ -532,12 +533,12 @@ Warna Bar Realisasi
 .highcharts-point.highcharts-color-1,
 .highcharts-legend-item.highcharts-color-1 .highcharts-point,
 .highcharts-tooltip .highcharts-color-1 {
-    fill: #b4eb34;
+    fill: #dcfce7;
 }
 
 .highcharts-tooltip.highcharts-color-1,
 .highcharts-data-label-connector.highcharts-color-1 {
-    stroke: #2b2b29;
+    stroke: #16803c;
     /*warna tooltip pada bar lebih gelap agar terlihat*/
 }
 
@@ -636,7 +637,7 @@ span.select2.select2-container {
 }
 
 .select-row {
-    background-color: #f8deb5 !important;
+    background-color: #dcfce7 !important;
 }
 
 .paging {
@@ -744,8 +745,8 @@ div.form-surat .content-header {
 
 /* Token Field */
 .tokenfield .token {
-    background-color: #3c8dbc;
-    border-color: #367fa9;
+    background-color: #16803c;
+    border-color: #0a5b28;
     border-radius: 5px;
     padding: 1px 5px;
     font-size: 12px;
@@ -820,7 +821,7 @@ div.form-surat .content-header {
 }
 
 .info-box.active {
-    border: 2px solid #0045ffb8;
+    border: 2px solid #16803cb8;
 }
 
 .radius-3 {
@@ -942,28 +943,28 @@ table.dataTable thead th.sorting_desc[rowspan="2"]::after {
 :root {
 
     /* Primary Colors */
-    --admin-primary: #4D774E;
-    --admin-primary-dark: #164A41;
-    --admin-primary-light: #9DC88D;
+    --admin-primary: #16803c;
+    --admin-primary-dark: #0a5b28;
+    --admin-primary-light: #dcfce7;
 
     /* Accent */
     --admin-secondary: #F1B24A;
     --admin-secondary-dark: #D9982B;
 
     /* Sidebar */
-    --admin-bg-sidebar: #164A41;
-    --admin-bg-sidebar-active: #0F332D;
+    --admin-bg-sidebar: #0a5b28;
+    --admin-bg-sidebar-active: #053b19;
 
     /* Text */
     --admin-text-sidebar: #ffffff;
-    --admin-text-heading: #164A41;
+    --admin-text-heading: #0a5b28;
 
     /* Background */
-    --admin-bg: #F8FAF5;
+    --admin-bg: #f4fbf6;
     --admin-card-bg: #FFFFFF;
 
     /* Border */
-    --admin-border-color: #E8EFE8;
+    --admin-border-color: #dcfce7;
 
     /* Shadow */
     --admin-shadow:
@@ -1012,7 +1013,7 @@ body,
 }
 
 .main-header .logo:hover {
-    background: #0F332D !important;
+    background: #053b19 !important;
 }
 
 .main-header .navbar .sidebar-toggle:hover {
@@ -1025,7 +1026,7 @@ body,
 
 .main-header .navbar .nav>li>a:hover,
 .main-header .navbar .nav>li>a:focus {
-    background: #f3f8f3 !important;
+    background: #dcfce7 !important;
     color: var(--admin-primary-dark) !important;
 }
 
@@ -1037,8 +1038,8 @@ body,
 .left-side {
     background:
         linear-gradient(180deg,
-            #164A41 0%,
-            #0F332D 100%) !important;
+            #0a5b28 0%,
+            #053b19 100%) !important;
 }
 
 .sidebar-menu>li.header {
@@ -1151,7 +1152,7 @@ body,
     color: white !important;
 
     box-shadow:
-        0 4px 15px rgba(77, 119, 78, .25);
+        0 4px 15px rgba(22, 128, 60, .25);
 }
 
 .btn-primary:hover,
@@ -1188,7 +1189,7 @@ body,
 
 .form-control {
     border-radius: 12px !important;
-    border: 1px solid #dbe4db !important;
+    border: 1px solid #dcfce7 !important;
     box-shadow: none !important;
 }
 
@@ -1196,7 +1197,7 @@ body,
     border-color: var(--admin-primary) !important;
 
     box-shadow:
-        0 0 0 4px rgba(77, 119, 78, .15) !important;
+        0 0 0 4px rgba(22, 128, 60, .15) !important;
 }
 
 /* ========================================
@@ -1208,7 +1209,7 @@ body,
 }
 
 .table thead {
-    background: #F4F8F4;
+    background: #dcfce7;
 }
 
 .table thead th {
@@ -1222,7 +1223,7 @@ body,
 }
 
 .table>tbody>tr:hover {
-    background: #F9FCF9;
+    background: #f0fdf4;
 }
 
 /* ========================================
@@ -1252,8 +1253,8 @@ body,
 .small-box.bg-green,
 .small-box.bg-emerald {
     background: linear-gradient(135deg,
-            #4D774E,
-            #164A41) !important;
+            #16803c,
+            #0a5b28) !important;
     color: white !important;
 }
 
@@ -1286,7 +1287,7 @@ body,
 
 .label-success,
 .badge-success {
-    background: #22c55e !important;
+    background: #16803c !important;
 }
 
 .label-warning,
@@ -1316,14 +1317,14 @@ a:focus {
 }
 
 ::-webkit-scrollbar-track {
-    background: #eef3ee;
+    background: #f4fbf6;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #9DC88D;
+    background: #dcfce7;
     border-radius: 50px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #4D774E;
+    background: #16803c;
 }
