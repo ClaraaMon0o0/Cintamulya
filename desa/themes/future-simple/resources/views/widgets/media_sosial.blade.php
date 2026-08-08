@@ -10,35 +10,37 @@
         @foreach ($sosmed as $data)
             @php
                 $link = trim($data['link'] ?? '');
-                if (!empty($link)) {
-                    if (str_starts_with($link, 'http://') || str_starts_with($link, 'https://')) {
-                        $finalUrl = $link;
-                    } else {
-                        $namaLow = strtolower($data['nama']);
-                        if (str_contains($namaLow, 'facebook')) {
-                            $finalUrl = 'https://facebook.com/' . $link;
-                        } elseif (str_contains($namaLow, 'instagram')) {
-                            $finalUrl = 'https://instagram.com/' . $link;
-                        } elseif (str_contains($namaLow, 'youtube')) {
-                            $finalUrl = 'https://youtube.com/channel/' . $link;
-                        } elseif (str_contains($namaLow, 'whatsapp')) {
-                            $finalUrl = 'https://wa.me/' . preg_replace('/[^0-9]/', '', $link);
-                        } elseif (str_contains($namaLow, 'telegram')) {
-                            $finalUrl = 'https://t.me/' . $link;
-                        } elseif (str_contains($namaLow, 'twitter') || str_contains($namaLow, 'x')) {
-                            $finalUrl = 'https://x.com/' . $link;
-                        } else {
-                            $finalUrl = 'https://' . $link;
-                        }
-                    }
+                $namaLow = strtolower($data['nama'] ?? '');
+                
+                $faIcon = 'fa-solid fa-globe';
+                $bgColor = '#16803c';
+
+                if (str_contains($namaLow, 'facebook')) {
+                    $faIcon = 'fa-brands fa-facebook-f'; $bgColor = '#1877f2';
+                    $finalUrl = str_starts_with($link, 'http') ? $link : 'https://facebook.com/' . $link;
+                } elseif (str_contains($namaLow, 'instagram')) {
+                    $faIcon = 'fa-brands fa-instagram'; $bgColor = 'linear-gradient(45deg, #f09433, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888)';
+                    $finalUrl = str_starts_with($link, 'http') ? $link : 'https://instagram.com/' . $link;
+                } elseif (str_contains($namaLow, 'youtube')) {
+                    $faIcon = 'fa-brands fa-youtube'; $bgColor = '#ff0000';
+                    $finalUrl = str_starts_with($link, 'http') ? $link : 'https://youtube.com/channel/' . $link;
+                } elseif (str_contains($namaLow, 'whatsapp')) {
+                    $faIcon = 'fa-brands fa-whatsapp'; $bgColor = '#25d366';
+                    $finalUrl = str_starts_with($link, 'http') ? $link : 'https://wa.me/' . preg_replace('/[^0-9]/', '', $link);
+                } elseif (str_contains($namaLow, 'telegram')) {
+                    $faIcon = 'fa-brands fa-telegram'; $bgColor = '#26a5e4';
+                    $finalUrl = str_starts_with($link, 'http') ? $link : 'https://t.me/' . $link;
+                } elseif (str_contains($namaLow, 'twitter') || str_contains($namaLow, 'x')) {
+                    $faIcon = 'fa-brands fa-x-twitter'; $bgColor = '#0f1419';
+                    $finalUrl = str_starts_with($link, 'http') ? $link : 'https://x.com/' . $link;
                 } else {
-                    $finalUrl = '';
+                    $finalUrl = str_starts_with($link, 'http') ? $link : ($link ? 'https://' . $link : '');
                 }
             @endphp
 
-            @if (!empty($finalUrl))
-                <a href="{{ $finalUrl }}" target="_blank" rel="noopener noreferrer" style="width:40px;height:40px;border-radius:var(--r-md);overflow:hidden;box-shadow:var(--sh-sm);display:inline-flex;align-items:center;justify-content:center;transition:transform .2s;" title="{{ $data['nama'] }}">
-                    <img src="{{ $data['icon'] }}" alt="{{ $data['nama'] }}" style="width:100%;height:100%;object-fit:cover;" />
+            @if (!empty($finalUrl) && !empty($link))
+                <a href="{{ $finalUrl }}" target="_blank" rel="noopener noreferrer" style="width:38px;height:38px;border-radius:50%;background:{{ $bgColor }};color:white;display:inline-flex;align-items:center;justify-content:center;font-size:1.1rem;text-decoration:none;box-shadow:var(--sh-sm);transition:transform .2s;" title="{{ $data['nama'] }}">
+                    <i class="{{ $faIcon }}"></i>
                 </a>
             @endif
         @endforeach
