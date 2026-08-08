@@ -1,8 +1,6 @@
 @extends('layanan_mandiri.auth.index')
 
 @section('content')
-    @include('admin.layouts.components.notifikasi')
-
     <form id="validasi" autocomplete="off" action="{{ $form_action }}" method="post">
 
         <div class="field">
@@ -21,7 +19,7 @@
             </div>
         </div>
 
-        <input type="hidden" name="anjungan_uuid" id="anjungan_uuid">
+        <input type="hidden" id="anjungan_uuid" disabled>
 
         <div class="field">
             <label for="pin">PIN</label>
@@ -82,7 +80,9 @@
             });
 
             var uuid = localStorage.getItem('anjungan_uuid');
-            if (uuid) $('#anjungan_uuid').val(uuid);
+            if (uuid) {
+                $('#anjungan_uuid').attr('name', 'anjungan_uuid').removeAttr('disabled').val(uuid);
+            }
         });
     </script>
 @endpush

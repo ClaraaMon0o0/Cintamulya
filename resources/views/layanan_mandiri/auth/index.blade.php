@@ -204,16 +204,35 @@
             margin-bottom: 1.75rem;
         }
 
-        /* Alert */
+        /* Alert Merah Tegas */
         .alert-error {
-            background: var(--red-50);
-            border: 1px solid var(--red-200);
-            color: var(--red-700);
-            border-radius: 8px;
-            padding: .8rem 1rem;
-            font-size: .82rem;
+            background: #fef2f2;
+            border: 1px solid #f87171;
+            border-left: 5px solid #dc2626;
+            color: #991b1b;
+            border-radius: 10px;
+            padding: .9rem 1.15rem;
+            font-size: .84rem;
             line-height: 1.5;
-            margin-bottom: 1.25rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 14px rgba(220, 38, 38, 0.12);
+            display: flex;
+            align-items: flex-start;
+            gap: .75rem;
+        }
+
+        .alert-error i.alert-icon {
+            font-size: 1.25rem;
+            color: #dc2626;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .alert-error .alert-heading {
+            font-weight: 700;
+            color: #7f1d1d;
+            font-size: .88rem;
+            margin-bottom: .25rem;
         }
 
         /* Input field */
