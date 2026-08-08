@@ -13,47 +13,47 @@
     </nav>
 
     {{-- Hero Header --}}
-    <div style="background:linear-gradient(135deg,#164e63 0%,#0e7490 55%,#06b6d4 100%);color:#fff;padding:2.25rem 2.5rem;border-radius:var(--r-lg);margin-bottom:2rem;box-shadow:var(--sh-md);position:relative;overflow:hidden;">
-        <div style="position:absolute;right:-10px;bottom:-20px;font-size:10rem;color:rgba(255,255,255,0.05);pointer-events:none;"><i class="fa-solid fa-landmark"></i></div>
-        <div style="position:relative;z-index:2;max-width:700px;">
-            <span style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);font-size:.75rem;font-weight:600;padding:.25rem .75rem;border-radius:999px;display:inline-flex;align-items:center;gap:.4rem;margin-bottom:.75rem;backdrop-filter:blur(4px);">
-                <i class="fa-solid fa-shield-halved" style="color:#a5f3fc;"></i> Daftar Informasi Publik (DIP)
+    <div style="background:linear-gradient(135deg, var(--c-primary-dark) 0%, var(--c-primary) 100%);color:var(--c-text-inv);padding:2rem 2.25rem;border-radius:var(--r-lg);margin-bottom:2rem;box-shadow:var(--sh-md);position:relative;overflow:hidden;">
+        <div style="position:absolute;right:-10px;bottom:-20px;font-size:9rem;color:rgba(255,255,255,0.06);pointer-events:none;"><i class="fa-solid fa-landmark"></i></div>
+        <div style="position:relative;z-index:2;max-width:680px;">
+            <span style="background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.3);font-size:.75rem;font-weight:600;padding:.25rem .75rem;border-radius:var(--r-pill);display:inline-flex;align-items:center;gap:.4rem;margin-bottom:.75rem;color:var(--c-text-inv);">
+                <i class="fa-solid fa-shield-halved"></i> Daftar Informasi Publik (DIP)
             </span>
-            <h1 style="font-size:2rem;font-weight:800;margin-bottom:.5rem;line-height:1.2;text-shadow:0 2px 4px rgba(0,0,0,0.15);">
+            <h1 style="font-size:1.75rem;font-weight:700;margin-bottom:.5rem;line-height:1.3;color:var(--c-text-inv);">
                 Informasi Publik Desa {{ e($desa['nama_desa']) }}
             </h1>
-            <p style="font-size:.95rem;color:#cffafe;line-height:1.65;margin:0;">
-                Dokumen informasi berkala dan serta merta yang wajib tersedia sesuai UU Keterbukaan Informasi Publik (KIP) No. 14/2008.
+            <p style="font-size:.9rem;color:rgba(255,255,255,0.9);line-height:1.6;margin:0;">
+                Dokumen informasi berkala dan serta merta yang wajib tersedia sesuai UU KIP No. 14/2008.
             </p>
         </div>
     </div>
 
     {{-- Table Card --}}
-    <div style="background:white;border-radius:var(--r-lg);border:1px solid var(--c-border);padding:1.5rem;box-shadow:var(--sh-sm);">
-        <h3 style="font-size:1rem;font-weight:700;color:var(--c-text-head);margin-bottom:1.25rem;display:flex;align-items:center;gap:.5rem;">
+    <div style="background:var(--c-white);border-radius:var(--r-md);border:1px solid var(--c-border);padding:1.25rem;box-shadow:var(--sh-sm);">
+        <h3 style="font-size:.95rem;font-weight:700;color:var(--c-text-head);margin-bottom:1rem;display:flex;align-items:center;gap:.4rem;">
             <i class="fa-solid fa-folder-open" style="color:var(--c-primary);"></i> Daftar Dokumen Informasi Publik
         </h3>
         <div style="overflow-x:auto;">
             <table class="fs-table" id="tabelData" style="width:100%;border-collapse:collapse;font-size:.83rem;">
                 <thead>
-                    <tr style="background:linear-gradient(135deg,#164e63,#0e7490);color:white;">
-                        <th style="padding:.75rem .85rem;text-align:center;width:50px;">No</th>
-                        <th style="padding:.75rem .85rem;text-align:left;">Judul Informasi</th>
-                        <th style="padding:.75rem .85rem;text-align:center;width:75px;">Tahun</th>
-                        <th style="padding:.75rem .85rem;text-align:left;">Kategori</th>
-                        <th style="padding:.75rem .85rem;text-align:center;width:110px;">Tanggal Upload</th>
-                        <th style="padding:.75rem .85rem;text-align:center;width:80px;">Aksi</th>
+                    <tr style="background:var(--c-primary-dark);color:var(--c-text-inv);">
+                        <th style="padding:.65rem .75rem;text-align:center;width:50px;color:var(--c-text-inv);">No</th>
+                        <th style="padding:.65rem .75rem;text-align:left;color:var(--c-text-inv);">Judul Informasi</th>
+                        <th style="padding:.65rem .75rem;text-align:center;width:75px;color:var(--c-text-inv);">Tahun</th>
+                        <th style="padding:.65rem .75rem;text-align:left;color:var(--c-text-inv);">Kategori</th>
+                        <th style="padding:.65rem .75rem;text-align:center;width:110px;color:var(--c-text-inv);">Tanggal Upload</th>
+                        <th style="padding:.65rem .75rem;text-align:center;width:80px;color:var(--c-text-inv);">Aksi</th>
                     </tr>
                 </thead>
-                <tfoot></tfoot>
+                <tbody></tbody>
             </table>
         </div>
     </div>
 </div>
 
 <style>
-.fs-table th, .fs-table td { padding:.65rem .85rem; border-bottom:1px solid var(--c-border); }
-.fs-table tbody tr:hover { background:#f0fdff; }
+.fs-table th, .fs-table td { padding:.65rem .75rem; border-bottom:1px solid var(--c-border); color:var(--c-text-body); }
+.fs-table tbody tr:hover { background:var(--c-primary-bg); }
 </style>
 
 @push('scripts')
@@ -84,12 +84,12 @@ $(document).ready(function() {
             { data: null, searchable: false, orderable: false, className: 'text-center', render: (d, t, r, m) => m.row + m.settings._iDisplayStart + 1 },
             { data: 'nama', name: 'nama', render: (d, t, r) => `<span style="font-weight:600;color:var(--c-text-head);">${r.attributes.nama}</span>` },
             { data: 'tahun', name: 'tahun', className: 'text-center', render: (d, t, r) => `<strong>${r.attributes.tahun || '-'}</strong>` },
-            { data: 'kategori', name: 'kategori', render: (d, t, r) => `<span style="background:#cffafe;color:#164e63;font-size:.75rem;padding:.15rem .5rem;border-radius:999px;font-weight:600;">${r.attributes.kategori || '-'}</span>` },
+            { data: 'kategori', name: 'kategori', render: (d, t, r) => `<span style="background:var(--c-primary-light);color:var(--c-primary-dark);font-size:.75rem;padding:.15rem .5rem;border-radius:var(--r-pill);font-weight:600;">${r.attributes.kategori || '-'}</span>` },
             { data: 'tgl_upload', name: 'tgl_upload', className: 'text-center', render: (d, t, r) => r.attributes.tgl_upload || '-' },
             {
                 data: null, searchable: false, orderable: false, className: 'text-center',
                 render: (d, t, r) => (r.attributes.satuan || r.attributes.url)
-                    ? `<button class="lihat-dokumen" data-nama="${r.attributes.nama}" data-url="${r.attributes.url||''}" data-file="${r.attributes.satuan||''}" style="padding:.3rem .7rem;background:var(--c-primary);color:white;border:none;border-radius:var(--r-sm);font-size:.75rem;cursor:pointer;font-weight:600;"><i class="fa-solid fa-file" style="margin-right:.3rem;"></i>Lihat</button>`
+                    ? `<button class="lihat-dokumen" data-nama="${r.attributes.nama}" data-url="${r.attributes.url||''}" data-file="${r.attributes.satuan||''}" style="padding:.3rem .65rem;background:var(--c-primary);color:white;border:none;border-radius:var(--r-sm);font-size:.75rem;cursor:pointer;font-weight:600;"><i class="fa-solid fa-file" style="margin-right:.3rem;"></i>Lihat</button>`
                     : `<span style="color:var(--c-text-muted);font-size:.75rem;">-</span>`
             }
         ],
@@ -102,10 +102,10 @@ $(document).ready(function() {
         if (!file) { Swal.fire('Tidak Ada File', 'Dokumen belum tersedia.', 'warning'); return; }
         var slug = nama.toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
         Swal.fire({
-            title: `<h4 style="font-size:1rem;">${nama}</h4>`,
+            title: `<h4 style="font-size:1rem;color:var(--c-text-head);">${nama}</h4>`,
             html: `<div style="display:flex;flex-direction:column;align-items:center;gap:1rem;">
-                <iframe src="${file}" style="width:100%;min-height:420px;border:1px solid #e2e8f0;border-radius:8px;"></iframe>
-                <button class="unduh-dokumen" data-nama="${slug}" data-file="${file}" style="padding:.5rem 1.25rem;background:var(--c-primary);color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;">
+                <iframe src="${file}" style="width:100%;min-height:400px;border:1px solid var(--c-border);border-radius:8px;"></iframe>
+                <button class="unduh-dokumen" data-nama="${slug}" data-file="${file}" style="padding:.45rem 1.1rem;background:var(--c-primary);color:white;border:none;border-radius:var(--r-sm);cursor:pointer;font-weight:600;font-size:.85rem;">
                     <i class="fa-solid fa-download" style="margin-right:.4rem;"></i>Unduh File
                 </button></div>`,
             width: '65%', showCloseButton: true, showConfirmButton: false,

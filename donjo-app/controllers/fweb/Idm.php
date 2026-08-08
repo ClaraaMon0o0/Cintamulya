@@ -41,7 +41,12 @@ class Idm extends Web_Controller
 {
     public function index($tahun = null)
     {
-        $this->hak_akses_menu('status-idm/' . $tahun);
+        if (empty($tahun)) {
+            $tahun = '2024';
+        }
+
+        $linkMenu = 'status-idm';
+        $this->hak_akses_menu($linkMenu);
 
         return view('theme::partials.idm.index', [
             'tahun' => $tahun,
